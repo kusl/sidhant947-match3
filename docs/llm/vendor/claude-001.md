@@ -1,3 +1,6 @@
+00
+22
+
 I have cloned an existing github repository 
 and will host my copy at https://github.com/kusl/sidhant947-match3 
 the original repository was at https://github.com/sidhant947/match3
