@@ -32,3 +32,6 @@ if there are a lot of files that need to change
     No bespoke sed/patch scripts — full files only for anything that changes
     Docs updated alongside code changes
     Low verbosity, no code comments
+    NEVER EVER EVER write code comments. 
+    in fact, never, ever write comments at all. 
+    markdown files such as readme.md are the exception but even these should be as concise and terse as possible.
