@@ -6,6 +6,7 @@ import 'package:match3/domain/models/game_state_model.dart';
 import 'package:match3/domain/models/level_generator.dart';
 import 'package:match3/domain/models/level_goal.dart';
 import 'package:match3/domain/models/tile_model.dart';
+import 'package:match3/domain/services/best_move_finder.dart';
 
 class GameViewModel extends ChangeNotifier {
   final ProgressRepository progressRepository;
@@ -251,14 +252,26 @@ class GameViewModel extends ChangeNotifier {
       final progress = await progressRepository.getProgress();
       if (!progress.hintsEnabled) return;
 
-      final move = _isTwistMode
-          ? findPossibleTwistMove(_state.tiles, _state.rows, _state.cols)
-          : findPossibleMove(_state.tiles, _state.rows, _state.cols);
+      final move = findBestMove();
       if (move != null) {
         _state = _state.copyWith(hintTileIds: move.map((t) => t.id).toSet());
         notifyListeners();
       }
     });
+  }
+
+  List<TileModel>? findBestMove() {
+    final finder = BestMoveFinder(
+      rows: _state.rows,
+      cols: _state.cols,
+      goal: _state.goal,
+      jellyTiles: _state.jellyTiles,
+      colorBombEmoji: progressRepository.cachedProgress.colorBombEmoji,
+    );
+    if (_isTwistMode) {
+      return finder.findBestTwist(_state.tiles) ?? findPossibleTwistMove(_state.tiles, _state.rows, _state.cols);
+    }
+    return finder.findBestSwap(_state.tiles) ?? findPossibleMove(_state.tiles, _state.rows, _state.cols);
   }
 
   void clearHints() {
@@ -439,6 +452,9 @@ class GameViewModel extends ChangeNotifier {
       if (tile1 == null || tile2 == null) {
         return false;
       }
+      if (!tile1.canSwap || !tile2.canSwap) {
+        return false;
+      }
 
       final swappedTiles = _state.tiles.map((tile) {
         if (tile.id == tile1.id) {
@@ -608,7 +624,6 @@ class GameViewModel extends ChangeNotifier {
         }
       }
 
-      // Break adjacent ice and damage adjacent crates
       final postDamageTiles = updatedTiles.map((tile) {
         if (finalExplodedIds.contains(tile.id)) return tile;
         final isAdjacent = destroyedTiles.any((d) =>
@@ -692,7 +707,6 @@ class GameViewModel extends ChangeNotifier {
 
     final createdSpecialIds = <String>[];
 
-    // Phase 1: Convert remaining moves into special candies one by one
     while (_state.movesLeft > 0) {
       final candidates = _state.tiles.where((t) => t.type == TileType.normal && !t.isFrozen && !createdSpecialIds.contains(t.id)).toList();
       if (candidates.isEmpty) break;
@@ -727,7 +741,6 @@ class GameViewModel extends ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 400));
 
-    // Phase 2: Detonate specials sequentially for full cinematic effect
     for (final specialId in createdSpecialIds) {
       final tile = _state.tiles.where((t) => t.id == specialId).firstOrNull;
       if (tile == null || tile.type == TileType.normal) continue;
@@ -761,7 +774,6 @@ class GameViewModel extends ChangeNotifier {
       await Future.delayed(const Duration(milliseconds: 380));
     }
 
-    // Phase 3: Cascade any remaining matches
     await _processMatchesAndCascade();
 
     final finalStars = calculateStars(_state.score);

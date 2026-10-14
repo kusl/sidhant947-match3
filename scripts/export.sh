@@ -6,10 +6,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_PATH="${1:-$SCRIPT_DIR/..}"
 OUTPUT_FILE="${2:-docs/llm/dump.txt}"
 
-INCLUDE_EXTENSIONS="cs csproj slnx props targets json razor js mjs css html svg yml yaml sh md toml kt kts gradle properties yaml dart"
-INCLUDE_NAMES=".gitignore .gitattributes .editorconfig"
-EXCLUDE_NAMES="package-lock.json LICENSE"
-EXCLUDE_DIRS="bin obj .vs .git node_modules .vscode .idea TestResults artifacts coverage .velixir"
+INCLUDE_EXTENSIONS="dart yaml yml kt kts java gradle properties xml json arb lock md txt sh toml pro cfg html css js svg plist swift xcconfig cmake"
+INCLUDE_NAMES=".gitignore .gitattributes .editorconfig .metadata"
+EXCLUDE_NAMES="LICENSE"
+EXCLUDE_DIRS="build .dart_tool .gradle .pub-cache .git .idea .vscode .cxx Pods ephemeral coverage node_modules"
 EXCLUDE_PREFIXES="docs/llm/"
 
 PROJECT_PATH="$(cd "$PROJECT_PATH" && pwd)"
@@ -175,7 +175,8 @@ if in_git_repo; then
         GIT_DIRTY="no"
     fi
 fi
-DOTNET_VERSION="$(dotnet --version 2>/dev/null || echo 'not installed')"
+FLUTTER_VERSION="$( (flutter --version 2>/dev/null || true) | awk 'NR==1')"
+[ -n "$FLUTTER_VERSION" ] || FLUTTER_VERSION="not installed"
 
 TMP_OUTPUT="$(mktemp "$OUTPUT_DIR/.export.XXXXXX")"
 
@@ -187,7 +188,7 @@ TMP_OUTPUT="$(mktemp "$OUTPUT_DIR/.export.XXXXXX")"
     echo "Git Commit:      $GIT_COMMIT"
     echo "Git Branch:      $GIT_BRANCH"
     echo "Git Dirty:       $GIT_DIRTY"
-    echo ".NET SDK:        $DOTNET_VERSION"
+    echo "Flutter:         $FLUTTER_VERSION"
     echo "Files Exported:  $FILE_COUNT"
     echo "==============================================================================="
     echo
