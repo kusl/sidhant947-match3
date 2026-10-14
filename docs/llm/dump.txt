@@ -1,12 +1,12 @@
 ===============================================================================
 PROJECT EXPORT
-Generated (UTC): 2026-10-14 11:31:55
+Generated (UTC): 2026-10-14 11:48:28
 Project Path:    /home/kushal/src/dart/match3
-Git Commit:      15d674b851991f6ffb613943296dfef73db2258c
+Git Commit:      795316b6461554c45b426c3a641ee6b17dfb502b
 Git Branch:      main
 Git Dirty:       no
-.NET SDK:        10.0.112
-Files Exported:  45
+Flutter:         not installed
+Files Exported:  59
 ===============================================================================
 
 DIRECTORY STRUCTURE (exported files only):
@@ -22,6 +22,7 @@ DIRECTORY STRUCTURE (exported files only):
             build.yml
             test.yml
     .gitignore
+    .metadata
     AI-DECLARATION.md
     README.md
     analysis_options.yaml
@@ -30,18 +31,41 @@ DIRECTORY STRUCTURE (exported files only):
         app/
             build.gradle.kts
             src/
+                debug/
+                    AndroidManifest.xml
                 main/
+                    AndroidManifest.xml
                     kotlin/
                         com/
                             sidhant/
                                 match3/
                                     MainActivity.kt
+                    res/
+                        drawable-v21/
+                            launch_background.xml
+                        drawable/
+                            launch_background.xml
+                        mipmap-anydpi-v26/
+                            ic_launcher.xml
+                        values-night/
+                            styles.xml
+                        values/
+                            styles.xml
+                profile/
+                    AndroidManifest.xml
         build.gradle.kts
         gradle.properties
         gradle/
             wrapper/
                 gradle-wrapper.properties
         settings.gradle.kts
+    fastlane/
+        metadata/
+            android/
+                en-US/
+                    full_description.txt
+                    short_description.txt
+                    title.txt
     lib/
         data/
             repositories/
@@ -57,6 +81,8 @@ DIRECTORY STRUCTURE (exported files only):
                 level_goal.dart
                 tile_model.dart
                 user_progress.dart
+            services/
+                best_move_finder.dart
         main.dart
         ui/
             core/
@@ -95,6 +121,7 @@ DIRECTORY STRUCTURE (exported files only):
                     widgets/
                         custom_emoji_picker.dart
             providers.dart
+    pubspec.lock
     pubspec.yaml
     scripts/
         export.sh
@@ -192,10 +219,10 @@ Add any other context or screenshots about the feature request here.
 
 ================================================================================
 FILE:     .github/workflows/build.yml
-SIZE:     1.48 KB (1520 bytes)
-LINES:    57
-SHA256:   a6b615030b525b1e2686d3c6021eb7d8d6de4f0b94c2cd1ebe669cf0fdfeb64f
-MODIFIED: 2026-10-14 11:21:33 (UTC)
+SIZE:     2.77 KB (2834 bytes)
+LINES:    85
+SHA256:   e28901e600689b72e76338f834592639433e7e73a68fe1c92e6e1d5bd500cb5a
+MODIFIED: 2026-10-14 11:45:46 (UTC)
 ================================================================================
 
 name: Build and Release
@@ -204,16 +231,18 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
 
-env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build
+  release:
+    name: Build and Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -231,30 +260,56 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Compute Version
+        id: version
+        run: |
+          name="$(sed -nE 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' pubspec.yaml)"
+          test -n "$name"
+          code=$((100 + GITHUB_RUN_NUMBER))
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "tag=v$name.$GITHUB_RUN_NUMBER" >> "$GITHUB_OUTPUT"
+
       - name: Get Dependencies
         run: flutter pub get
 
       - name: Setup Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
-          echo "storePassword=${{ secrets.STORE_PASSWORD }}" > android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=upload-keystore.jks" >> android/key.properties
+          for v in KEYSTORE_BASE64 KEY_ALIAS KEY_PASSWORD STORE_PASSWORD; do
+            if [ -z "${!v}" ]; then echo "::error::Missing secret $v"; exit 1; fi
+          done
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode --ignore-garbage > android/app/upload-keystore.jks
+          keytool -list -keystore android/app/upload-keystore.jks -storepass "$STORE_PASSWORD" -alias "$KEY_ALIAS" > /dev/null
+          {
+            printf 'storePassword=%s\n' "$STORE_PASSWORD"
+            printf 'keyPassword=%s\n' "$KEY_PASSWORD"
+            printf 'keyAlias=%s\n' "$KEY_ALIAS"
+            printf 'storeFile=upload-keystore.jks\n'
+          } > android/key.properties
 
-      - name: Build Android Artifacts
+      - name: Build APKs
         run: |
-          flutter build apk --release
-          flutter build apk --release --split-per-abi
+          flutter build apk --release --build-name=${{ steps.version.outputs.name }} --build-number=${{ steps.version.outputs.code }}
+          flutter build apk --release --split-per-abi --build-name=${{ steps.version.outputs.name }} --build-number=${{ steps.version.outputs.code }}
+          ls -l build/app/outputs/flutter-apk/
 
-      - name: Upload Artifacts to GitHub Release
+      - name: Publish Release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ inputs.version }}
-          name: ${{ inputs.version }}
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          draft: false
+          prerelease: false
+          make_latest: 'true'
           generate_release_notes: true
-          files: |
-            build/app/outputs/flutter-apk/*.apk
+          fail_on_unmatched_files: true
+          files: build/app/outputs/flutter-apk/*.apk
 
 
 ================================================================================
@@ -388,6 +443,46 @@ app.*.map.json
 
 
 ================================================================================
+FILE:     .metadata
+SIZE:     0.94 KB (966 bytes)
+LINES:    30
+SHA256:   fbed02053408857758c109778e69b732a7b53baf327646bddbba00687c6e2aba
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to assess capabilities and perform upgrades etc.
+#
+# This file should be version controlled and should not be manually edited.
+
+version:
+  revision: "6a19cca56475dbfba1478ee68d7bd0c2ef891da1"
+  channel: "stable"
+
+project_type: app
+
+# Tracks metadata for the flutter migrate command
+migration:
+  platforms:
+    - platform: root
+      create_revision: 6a19cca56475dbfba1478ee68d7bd0c2ef891da1
+      base_revision: 6a19cca56475dbfba1478ee68d7bd0c2ef891da1
+    - platform: linux
+      create_revision: 6a19cca56475dbfba1478ee68d7bd0c2ef891da1
+      base_revision: 6a19cca56475dbfba1478ee68d7bd0c2ef891da1
+
+  # User provided section
+
+  # List of Local paths (relative to this file) that should be
+  # ignored by the migrate tool.
+  #
+  # Files that are not part of the templates will be ignored by default.
+  unmanaged_files:
+    - 'lib/main.dart'
+    - 'ios/Runner.xcodeproj/project.pbxproj'
+
+
+================================================================================
 FILE:     AI-DECLARATION.md
 SIZE:     0.72 KB (741 bytes)
 LINES:    21
@@ -420,17 +515,24 @@ If you use AI to help write a contribution, **please just declare it first**. PR
 
 ================================================================================
 FILE:     README.md
-SIZE:     0.91 KB (930 bytes)
-LINES:    17
-SHA256:   1c7c94dd0d253c08591f36181ffddfd0420fe7110ec14da948de2a4c331283b7
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SIZE:     1.65 KB (1685 bytes)
+LINES:    28
+SHA256:   cb9a3cd9bbbc7808a99703408461d13346187ebbca0c37e208f7bc5cbf9fa8b0
+MODIFIED: 2026-10-14 11:47:21 (UTC)
 ================================================================================
 
 # Match 3 - Free Open Source Offline Puzzle Game
 
-An elegant, minimal, and open-source Match-3 puzzle game built using Flutter. This game is designed for players who want a pure, privacy-respecting, and uninterrupted gaming experience.
+Fork of [sidhant947/match3](https://github.com/sidhant947/match3). An elegant, minimal, and open-source Match-3 puzzle game built using Flutter.
 
 [![AI-DECLARATION: copilot](https://img.shields.io/badge/䷼%20AI--DECLARATION-copilot-fee2e2?labelColor=fee2e2)](AI-DECLARATION.md)
+
+## Fork Changes
+
+- **Best-move hints**: the hint simulates every legal swap (or twist) through matches, specials, explosions, obstacles and cascades, and highlights the one that does the most for the current level goal. Moves that complete the goal win outright; then goal progress, then points, specials created and obstacles hit. Refill tiles are unknown, so only deterministic cascades count.
+- **Frozen tiles and crates** can no longer be swapped, matching the hint and twist rules.
+- **Releases**: every push to `main` publishes a full GitHub release `v<pubspec version>.<run number>` with universal and per-ABI APKs.
+- `scripts/export.sh` dumps all text sources to `docs/llm/dump.txt` for LLM context.
 
 ## Features & Key Perks
 
@@ -439,6 +541,10 @@ An elegant, minimal, and open-source Match-3 puzzle game built using Flutter. Th
 - **No Trackers**: Completely free of analytics, advertising IDs, or third-party trackers.
 - **Completely Offline**: Fully functional offline. Ideal for commutes, travel, or areas with low connectivity.
 - **Infinite Levels**: Endless puzzle challenges with procedurally generated configurations.
+
+## Release Secrets
+
+`KEYSTORE_BASE64`, `KEY_ALIAS`, `KEY_PASSWORD`, `STORE_PASSWORD`.
 
 ## License
 
@@ -610,6 +716,78 @@ flutter {
 
 
 ================================================================================
+FILE:     android/app/src/debug/AndroidManifest.xml
+SIZE:     0.37 KB (378 bytes)
+LINES:    7
+SHA256:   30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The INTERNET permission is required for development. Specifically,
+         the Flutter tool needs it to communicate with the running application
+         to allow setting breakpoints, to provide hot reload, etc.
+    -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
+
+
+================================================================================
+FILE:     android/app/src/main/AndroidManifest.xml
+SIZE:     2.14 KB (2195 bytes)
+LINES:    45
+SHA256:   1d262d029a5fd0cd941476c1bf3d8574de897b3c8bd2fe53d39eac7375116055
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="Match 3"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
+
+
+================================================================================
 FILE:     android/app/src/main/kotlin/com/sidhant/match3/MainActivity.kt
 SIZE:     0.12 KB (120 bytes)
 LINES:    5
@@ -622,6 +800,138 @@ package com.sidhant.match3
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity : FlutterActivity()
+
+
+================================================================================
+FILE:     android/app/src/main/res/drawable-v21/launch_background.xml
+SIZE:     0.43 KB (438 bytes)
+LINES:    12
+SHA256:   7ca6d5cec2169c5a98661a119db23a6f3399c8fef2256ff04f3a642831282478
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="?android:colorBackground" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+</layer-list>
+
+
+================================================================================
+FILE:     android/app/src/main/res/drawable/launch_background.xml
+SIZE:     0.42 KB (434 bytes)
+LINES:    12
+SHA256:   94433756fe10005ddd6fc55cc5c0b1e9f3c10b66a08ceac795ece6713d34e28a
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/white" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+</layer-list>
+
+
+================================================================================
+FILE:     android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+SIZE:     0.32 KB (328 bytes)
+LINES:    6
+SHA256:   26310833a35076dfe3bdcd9fa469c5c7e36c26623eaf6009bf2d450f779189a3
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+  <background android:drawable="@mipmap/ic_launcher_background"/>
+  <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+  <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+</adaptive-icon>
+
+================================================================================
+FILE:     android/app/src/main/res/values-night/styles.xml
+SIZE:     0.97 KB (995 bytes)
+LINES:    18
+SHA256:   8c5bad5152f217e837519f9c15211d19f39bd45f5f67faf6dd81cb4b299e518f
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
+
+
+================================================================================
+FILE:     android/app/src/main/res/values/styles.xml
+SIZE:     0.97 KB (996 bytes)
+LINES:    18
+SHA256:   937d7c82f539c72eb94fd3a3773f29b3d3fef1997213c92cb632298cedf4bda9
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
+
+
+================================================================================
+FILE:     android/app/src/profile/AndroidManifest.xml
+SIZE:     0.37 KB (378 bytes)
+LINES:    7
+SHA256:   30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The INTERNET permission is required for development. Specifically,
+         the Flutter tool needs it to communicate with the running application
+         to allow setting breakpoints, to provide hot reload, etc.
+    -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
 
 
 ================================================================================
@@ -724,6 +1034,42 @@ plugins {
 
 include(":app")
 
+
+================================================================================
+FILE:     fastlane/metadata/android/en-US/full_description.txt
+SIZE:     0.45 KB (460 bytes)
+LINES:    7
+SHA256:   35fb82404ec4f96773bca0c4381c059d134102ec26fb14e86eb2b05d8dc7f96c
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+Features & Key Perks
+
+- 100% Privacy Focused: No user data collection, no telemetry, and no registration required.
+- Zero Ads: Play with no commercial interruptions or pop-ups.
+- No Trackers: Completely free of analytics, advertising IDs, or third-party trackers.
+- Completely Offline: Fully functional offline. Ideal for commutes, travel, or areas with low connectivity.
+- Infinite Levels: Endless puzzle challenges with procedurally generated configurations.
+
+================================================================================
+FILE:     fastlane/metadata/android/en-US/short_description.txt
+SIZE:     0.04 KB (43 bytes)
+LINES:    1
+SHA256:   50912e871ad73a231abf5bf4ad4b275c469e3295d91783c945d2d2f521e0a28f
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+Minimal and open-source Match-3 puzzle game
+
+================================================================================
+FILE:     fastlane/metadata/android/en-US/title.txt
+SIZE:     0.01 KB (7 bytes)
+LINES:    1
+SHA256:   240663f82ce5a311324f9844cf4707949d687ed47c8fb29d180cba6fe65cc4fa
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+Match 3
 
 ================================================================================
 FILE:     lib/data/repositories/progress_repository.dart
@@ -1744,6 +2090,443 @@ class UserProgress {
 
 
 ================================================================================
+FILE:     lib/domain/services/best_move_finder.dart
+SIZE:     13.32 KB (13638 bytes)
+LINES:    427
+SHA256:   aa1908b090f48f212e8a899e3998c158eab20e5babe3c308dc1790ce267ba31c
+MODIFIED: 2026-10-14 11:46:41 (UTC)
+================================================================================
+
+import 'dart:math';
+
+import 'package:match3/domain/models/level_goal.dart';
+import 'package:match3/domain/models/tile_model.dart';
+
+class _Cell {
+  _Cell(this.id, this.emoji, this.type, this.frozen, this.crateHp);
+
+  final String id;
+  String? emoji;
+  TileType type;
+  bool frozen;
+  int crateHp;
+
+  bool get canSwap => !frozen && type != TileType.crate;
+
+  _Cell clone() => _Cell(id, emoji, type, frozen, crateHp);
+}
+
+class _Scan {
+  _Scan(this.matched, this.specials);
+
+  final List<int> matched;
+  final Map<int, TileType> specials;
+}
+
+class _Outcome {
+  int points = 0;
+  int targetFruit = 0;
+  int specials = 0;
+  int specialValue = 0;
+  int combos = 0;
+  int jelly = 0;
+  int obstacles = 0;
+}
+
+class BestMoveFinder {
+  BestMoveFinder({
+    required this.rows,
+    required this.cols,
+    required this.goal,
+    required this.jellyTiles,
+    required this.colorBombEmoji,
+  });
+
+  final int rows;
+  final int cols;
+  final LevelGoal goal;
+  final Set<String> jellyTiles;
+  final String colorBombEmoji;
+
+  int get _size => rows * cols;
+
+  List<TileModel>? findBestSwap(List<TileModel> tiles) {
+    final origin = List<TileModel?>.filled(_size, null);
+    final base = _buildGrid(tiles, origin);
+    List<TileModel>? best;
+    var bestValue = double.negativeInfinity;
+
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        final a = r * cols + c;
+        if (origin[a] == null || !base[a]!.canSwap) continue;
+        for (final next in [(r, c + 1), (r + 1, c)]) {
+          if (next.$1 >= rows || next.$2 >= cols) continue;
+          final b = next.$1 * cols + next.$2;
+          if (origin[b] == null || !base[b]!.canSwap) continue;
+
+          final double value;
+          if (_isSpecialCombo(base[a]!, base[b]!)) {
+            value = (_evaluate(_simulateSwap(base, a, b)!) + _evaluate(_simulateSwap(base, b, a)!)) / 2;
+          } else {
+            final outcome = _simulateSwap(base, a, b);
+            if (outcome == null) continue;
+            value = _evaluate(outcome);
+          }
+
+          if (value > bestValue) {
+            bestValue = value;
+            best = [origin[a]!, origin[b]!];
+          }
+        }
+      }
+    }
+    return best;
+  }
+
+  List<TileModel>? findBestTwist(List<TileModel> tiles) {
+    final origin = List<TileModel?>.filled(_size, null);
+    final base = _buildGrid(tiles, origin);
+    List<TileModel>? best;
+    var bestValue = double.negativeInfinity;
+
+    for (var r = 0; r < rows - 1; r++) {
+      for (var c = 0; c < cols - 1; c++) {
+        final tl = r * cols + c;
+        final tr = r * cols + c + 1;
+        final br = (r + 1) * cols + c + 1;
+        final bl = (r + 1) * cols + c;
+        final cluster = [tl, tr, br, bl];
+        if (cluster.any((i) => origin[i] == null || !base[i]!.canSwap)) continue;
+
+        final g = _clone(base);
+        g[tr] = base[tl]!.clone();
+        g[br] = base[tr]!.clone();
+        g[bl] = base[br]!.clone();
+        g[tl] = base[bl]!.clone();
+
+        final prio = {for (final i in cluster) base[i]!.id};
+        if (_scan(g, prio).matched.isEmpty) continue;
+
+        final outcome = _Outcome();
+        _resolve(g, prio, outcome, Set<String>.of(jellyTiles), 0);
+        final value = _evaluate(outcome);
+        if (value > bestValue) {
+          bestValue = value;
+          best = [for (final i in cluster) origin[i]!];
+        }
+      }
+    }
+    return best;
+  }
+
+  List<_Cell?> _buildGrid(List<TileModel> tiles, List<TileModel?> origin) {
+    final g = List<_Cell?>.filled(_size, null);
+    for (final t in tiles) {
+      if (t.row < 0 || t.row >= rows || t.col < 0 || t.col >= cols) continue;
+      final i = t.row * cols + t.col;
+      g[i] = _Cell(t.id, t.emoji, t.type, t.isFrozen, t.crateHealth);
+      origin[i] = t;
+    }
+    for (var i = 0; i < _size; i++) {
+      g[i] ??= _unknown();
+    }
+    return g;
+  }
+
+  _Cell _unknown() => _Cell('', null, TileType.normal, false, 0);
+
+  List<_Cell?> _clone(List<_Cell?> g) => List<_Cell?>.generate(_size, (i) => g[i]!.clone());
+
+  String _key(int i) => '${i ~/ cols}_${i % cols}';
+
+  bool _isSpecialCombo(_Cell a, _Cell b) {
+    if (a.type == TileType.colorBomb || b.type == TileType.colorBomb) return true;
+    return a.type != TileType.normal && b.type != TileType.normal;
+  }
+
+  _Outcome? _simulateSwap(List<_Cell?> base, int a, int b) {
+    final g = _clone(base);
+    final first = g[a]!;
+    final second = g[b]!;
+    g[a] = second;
+    g[b] = first;
+
+    final outcome = _Outcome();
+    final jelly = Set<String>.of(jellyTiles);
+
+    if (_isSpecialCombo(first, second)) {
+      _applySpecialCombo(g, b, a, outcome, jelly);
+      _resolve(g, const {}, outcome, jelly, 1);
+      return outcome;
+    }
+
+    final prio = {first.id, second.id};
+    if (_scan(g, prio).matched.isEmpty) return null;
+    _resolve(g, prio, outcome, jelly, 0);
+    return outcome;
+  }
+
+  void _applySpecialCombo(List<_Cell?> g, int p1, int p2, _Outcome outcome, Set<String> jelly) {
+    final t1 = g[p1]!;
+    final t2 = g[p2]!;
+    final b1 = t1.type == TileType.colorBomb;
+    final b2 = t2.type == TileType.colorBomb;
+    final s1 = t1.type == TileType.stripedHorizontal || t1.type == TileType.stripedVertical;
+    final s2 = t2.type == TileType.stripedHorizontal || t2.type == TileType.stripedVertical;
+    final w1 = t1.type == TileType.wrapped;
+    final w2 = t2.type == TileType.wrapped;
+    final tr = p1 ~/ cols;
+    final tc = p1 % cols;
+    final all = List<int>.generate(_size, (i) => i);
+    final destroy = <int>{p1, p2};
+
+    List<int> sameColor(_Cell other) =>
+        other.emoji == null ? const [] : all.where((i) => g[i]!.emoji == other.emoji).toList();
+
+    if (b1 && b2) {
+      destroy.addAll(all);
+    } else if ((b1 && s2) || (b2 && s1)) {
+      final matching = sameColor(b1 ? t2 : t1);
+      destroy.addAll(matching);
+      for (final m in matching) {
+        destroy.addAll(all.where((i) => i ~/ cols == m ~/ cols || i % cols == m % cols));
+      }
+    } else if ((b1 && w2) || (b2 && w1)) {
+      final matching = sameColor(b1 ? t2 : t1);
+      destroy.addAll(matching);
+      for (final m in matching) {
+        destroy.addAll(all.where((i) => (i ~/ cols - m ~/ cols).abs() <= 1 && (i % cols - m % cols).abs() <= 1));
+      }
+    } else if (b1 || b2) {
+      destroy.addAll(sameColor(b1 ? t2 : t1));
+    } else if (s1 && s2) {
+      destroy.addAll(all.where((i) => i ~/ cols == tr || i % cols == tc));
+    } else if ((s1 && w2) || (s2 && w1)) {
+      destroy.addAll(all.where((i) => (i ~/ cols - tr).abs() <= 1 || (i % cols - tc).abs() <= 1));
+    } else if (w1 && w2) {
+      destroy.addAll(all.where((i) => (i ~/ cols - tr).abs() <= 2 && (i % cols - tc).abs() <= 2));
+    }
+
+    outcome.points += destroy.length * 60;
+    for (final i in destroy) {
+      if (jelly.remove(_key(i))) outcome.jelly++;
+      if (goal.targetFruitEmoji != null && g[i]!.emoji == goal.targetFruitEmoji) outcome.targetFruit++;
+    }
+    for (final i in destroy) {
+      g[i] = null;
+    }
+    _cascade(g);
+  }
+
+  void _resolve(List<_Cell?> g, Set<String> prio, _Outcome outcome, Set<String> jelly, int combo) {
+    var first = true;
+    for (var guard = 0; guard < 200; guard++) {
+      final scan = _scan(g, first ? prio : const {});
+      first = false;
+      if (scan.matched.isEmpty) return;
+
+      final exploded = _explode(g, scan.matched);
+      final finalExploded = exploded.difference(scan.specials.keys.toSet());
+
+      outcome.points += finalExploded.length * 50;
+      for (final i in exploded) {
+        if (jelly.remove(_key(i))) outcome.jelly++;
+      }
+      for (final i in finalExploded) {
+        if (goal.targetFruitEmoji != null && g[i]!.emoji == goal.targetFruitEmoji) outcome.targetFruit++;
+      }
+      outcome.specials += scan.specials.length;
+      for (final type in scan.specials.values) {
+        outcome.specialValue += _specialWorth(type);
+      }
+      if (combo > 0) outcome.combos++;
+      combo++;
+
+      scan.specials.forEach((i, type) {
+        g[i]!.type = type;
+        if (type == TileType.colorBomb) g[i]!.emoji = colorBombEmoji;
+      });
+
+      for (var i = 0; i < _size; i++) {
+        if (finalExploded.contains(i) || !_isAdjacent(i, finalExploded)) continue;
+        final cell = g[i]!;
+        if (cell.frozen) {
+          cell.frozen = false;
+          outcome.obstacles++;
+        } else if (cell.type == TileType.crate) {
+          cell.crateHp--;
+          outcome.obstacles++;
+          if (cell.crateHp <= 0) {
+            cell.type = TileType.normal;
+            cell.crateHp = 0;
+            cell.emoji = null;
+          }
+        }
+      }
+
+      for (final i in finalExploded) {
+        g[i] = null;
+      }
+      _cascade(g);
+    }
+  }
+
+  bool _isAdjacent(int i, Set<int> targets) {
+    final r = i ~/ cols;
+    final c = i % cols;
+    return (c > 0 && targets.contains(i - 1)) ||
+        (c < cols - 1 && targets.contains(i + 1)) ||
+        (r > 0 && targets.contains(i - cols)) ||
+        (r < rows - 1 && targets.contains(i + cols));
+  }
+
+  int _specialWorth(TileType type) {
+    switch (type) {
+      case TileType.stripedHorizontal:
+      case TileType.stripedVertical:
+        return 150;
+      case TileType.wrapped:
+        return 200;
+      case TileType.colorBomb:
+        return 300;
+      default:
+        return 0;
+    }
+  }
+
+  bool _same(_Cell a, _Cell b) => a.emoji != null && a.emoji == b.emoji;
+
+  int _pick(List<_Cell?> g, List<int> line, Set<String> prio, int fallback) {
+    for (final i in line) {
+      if (prio.contains(g[i]!.id)) return i;
+    }
+    return line[fallback];
+  }
+
+  _Scan _scan(List<_Cell?> g, Set<String> prio) {
+    final matched = <int>{};
+    final specials = <int, TileType>{};
+    final horizontal = <Set<int>>[];
+    final vertical = <Set<int>>[];
+
+    for (var r = 0; r < rows; r++) {
+      var start = 0;
+      for (var c = 1; c <= cols; c++) {
+        final current = c < cols ? g[r * cols + c] : null;
+        final startCell = g[r * cols + start]!;
+        if (current != null && _same(current, startCell) && current.type != TileType.colorBomb) continue;
+        final length = c - start;
+        if (length >= 3) {
+          final line = [for (var i = start; i < c; i++) r * cols + i];
+          matched.addAll(line);
+          horizontal.add(line.toSet());
+          if (length == 4) {
+            specials[_pick(g, line, prio, 1)] = TileType.stripedHorizontal;
+          } else if (length >= 5) {
+            specials[_pick(g, line, prio, 2)] = TileType.colorBomb;
+          }
+        }
+        start = c;
+      }
+    }
+
+    for (var c = 0; c < cols; c++) {
+      var start = 0;
+      for (var r = 1; r <= rows; r++) {
+        final current = r < rows ? g[r * cols + c] : null;
+        final startCell = g[start * cols + c]!;
+        if (current != null && _same(current, startCell) && current.type != TileType.colorBomb) continue;
+        final length = r - start;
+        if (length >= 3) {
+          final line = [for (var i = start; i < r; i++) i * cols + c];
+          matched.addAll(line);
+          vertical.add(line.toSet());
+          if (length == 4) {
+            specials[_pick(g, line, prio, 1)] = TileType.stripedVertical;
+          } else if (length >= 5) {
+            specials[_pick(g, line, prio, 2)] = TileType.colorBomb;
+          }
+        }
+        start = r;
+      }
+    }
+
+    for (final h in horizontal) {
+      for (final v in vertical) {
+        final intersection = h.intersection(v);
+        if (intersection.isNotEmpty && specials[intersection.first] != TileType.colorBomb) {
+          specials[intersection.first] = TileType.wrapped;
+        }
+      }
+    }
+
+    return _Scan(matched.toList(), specials);
+  }
+
+  Set<int> _explode(List<_Cell?> g, List<int> initial) {
+    final exploded = <int>{...initial};
+    final queue = List<int>.of(initial);
+    while (queue.isNotEmpty) {
+      final current = queue.removeLast();
+      final r = current ~/ cols;
+      final c = current % cols;
+      final type = g[current]!.type;
+      Iterable<int> targets;
+      if (type == TileType.stripedHorizontal) {
+        targets = [for (var cc = 0; cc < cols; cc++) r * cols + cc];
+      } else if (type == TileType.stripedVertical) {
+        targets = [for (var rr = 0; rr < rows; rr++) rr * cols + c];
+      } else if (type == TileType.wrapped) {
+        targets = [
+          for (var rr = max(0, r - 1); rr <= min(rows - 1, r + 1); rr++)
+            for (var cc = max(0, c - 1); cc <= min(cols - 1, c + 1); cc++) rr * cols + cc
+        ];
+      } else {
+        continue;
+      }
+      for (final t in targets) {
+        if (exploded.add(t)) queue.add(t);
+      }
+    }
+    return exploded;
+  }
+
+  void _cascade(List<_Cell?> g) {
+    for (var c = 0; c < cols; c++) {
+      var target = rows - 1;
+      for (var r = rows - 1; r >= 0; r--) {
+        final cell = g[r * cols + c];
+        if (cell == null) continue;
+        g[r * cols + c] = null;
+        g[target * cols + c] = cell;
+        target--;
+      }
+      while (target >= 0) {
+        g[target * cols + c] = _unknown();
+        target--;
+      }
+    }
+  }
+
+  double _evaluate(_Outcome o) {
+    final remaining = max(0, goal.targetValue - goal.currentValue);
+    final progress = switch (goal.type) {
+      LevelGoalType.score => o.points,
+      LevelGoalType.targetFruit => o.targetFruit,
+      LevelGoalType.createSpecials => o.specials,
+      LevelGoalType.comboMaster => o.combos,
+      LevelGoalType.clearJelly => o.jelly,
+    };
+    var value = (o.points + o.specialValue + o.obstacles * 40).toDouble();
+    if (goal.type != LevelGoalType.score) value += min(progress, remaining) * 1000;
+    if (remaining > 0 && progress >= remaining) value += 1e9;
+    return value;
+  }
+}
+
+
+================================================================================
 FILE:     lib/main.dart
 SIZE:     1.25 KB (1280 bytes)
 LINES:    49
@@ -2467,10 +3250,10 @@ class _TangibleButtonState extends ConsumerState<TangibleButton> with SingleTick
 
 ================================================================================
 FILE:     lib/ui/features/game/view_models/game_view_model.dart
-SIZE:     34.22 KB (35042 bytes)
-LINES:    995
-SHA256:   fc8fb59c23c5e44cd4db953d92295eea15c9e0bd31898491e2a160470a2e6b80
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SIZE:     34.48 KB (35311 bytes)
+LINES:    1007
+SHA256:   d0e15c5d4a04f29311d37788820c084ccf5f9bad1a6dba1e65d1b3dc530e7e73
+MODIFIED: 2026-10-14 11:47:02 (UTC)
 ================================================================================
 
 import 'dart:async';
@@ -2481,6 +3264,7 @@ import 'package:match3/domain/models/game_state_model.dart';
 import 'package:match3/domain/models/level_generator.dart';
 import 'package:match3/domain/models/level_goal.dart';
 import 'package:match3/domain/models/tile_model.dart';
+import 'package:match3/domain/services/best_move_finder.dart';
 
 class GameViewModel extends ChangeNotifier {
   final ProgressRepository progressRepository;
@@ -2726,14 +3510,26 @@ class GameViewModel extends ChangeNotifier {
       final progress = await progressRepository.getProgress();
       if (!progress.hintsEnabled) return;
 
-      final move = _isTwistMode
-          ? findPossibleTwistMove(_state.tiles, _state.rows, _state.cols)
-          : findPossibleMove(_state.tiles, _state.rows, _state.cols);
+      final move = findBestMove();
       if (move != null) {
         _state = _state.copyWith(hintTileIds: move.map((t) => t.id).toSet());
         notifyListeners();
       }
     });
+  }
+
+  List<TileModel>? findBestMove() {
+    final finder = BestMoveFinder(
+      rows: _state.rows,
+      cols: _state.cols,
+      goal: _state.goal,
+      jellyTiles: _state.jellyTiles,
+      colorBombEmoji: progressRepository.cachedProgress.colorBombEmoji,
+    );
+    if (_isTwistMode) {
+      return finder.findBestTwist(_state.tiles) ?? findPossibleTwistMove(_state.tiles, _state.rows, _state.cols);
+    }
+    return finder.findBestSwap(_state.tiles) ?? findPossibleMove(_state.tiles, _state.rows, _state.cols);
   }
 
   void clearHints() {
@@ -2914,6 +3710,9 @@ class GameViewModel extends ChangeNotifier {
       if (tile1 == null || tile2 == null) {
         return false;
       }
+      if (!tile1.canSwap || !tile2.canSwap) {
+        return false;
+      }
 
       final swappedTiles = _state.tiles.map((tile) {
         if (tile.id == tile1.id) {
@@ -3083,7 +3882,6 @@ class GameViewModel extends ChangeNotifier {
         }
       }
 
-      // Break adjacent ice and damage adjacent crates
       final postDamageTiles = updatedTiles.map((tile) {
         if (finalExplodedIds.contains(tile.id)) return tile;
         final isAdjacent = destroyedTiles.any((d) =>
@@ -3167,7 +3965,6 @@ class GameViewModel extends ChangeNotifier {
 
     final createdSpecialIds = <String>[];
 
-    // Phase 1: Convert remaining moves into special candies one by one
     while (_state.movesLeft > 0) {
       final candidates = _state.tiles.where((t) => t.type == TileType.normal && !t.isFrozen && !createdSpecialIds.contains(t.id)).toList();
       if (candidates.isEmpty) break;
@@ -3202,7 +3999,6 @@ class GameViewModel extends ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 400));
 
-    // Phase 2: Detonate specials sequentially for full cinematic effect
     for (final specialId in createdSpecialIds) {
       final tile = _state.tiles.where((t) => t.id == specialId).firstOrNull;
       if (tile == null || tile.type == TileType.normal) continue;
@@ -3236,7 +4032,6 @@ class GameViewModel extends ChangeNotifier {
       await Future.delayed(const Duration(milliseconds: 380));
     }
 
-    // Phase 3: Cascade any remaining matches
     await _processMatchesAndCascade();
 
     final finalStars = calculateStars(_state.score);
@@ -7476,6 +8271,666 @@ final activeThemeSkinProvider = Provider<AppThemeSkin>((ref) {
 
 
 ================================================================================
+FILE:     pubspec.lock
+SIZE:     18.52 KB (18969 bytes)
+LINES:    650
+SHA256:   8f3fd31f24d7af29b539d592057dd8220550c8149e0849e00818878bf8021efd
+MODIFIED: 2026-10-14 11:04:08 (UTC)
+================================================================================
+
+# Generated by pub
+# See https://dart.dev/tools/pub/glossary#lockfile
+packages:
+  args:
+    dependency: transitive
+    description:
+      name: args
+      sha256: d0481093c50b1da8910eb0bb301626d4d8eb7284aa739614d2b394ee09e3ea04
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
+  async:
+    dependency: transitive
+    description:
+      name: async
+      sha256: e2eb0491ba5ddb6177742d2da23904574082139b07c1e33b8503b9f46f3e1a37
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.13.1"
+  audioplayers:
+    dependency: transitive
+    description:
+      name: audioplayers
+      sha256: "2ba4bb2944baacbdd5372ff8254a8e7feb8c10d7739545e392f5605a8f618745"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.8.1"
+  audioplayers_android:
+    dependency: transitive
+    description:
+      name: audioplayers_android
+      sha256: f5ff5b15620fbab8cb0849e9636c48e2b96c3f0f71723bbbe2ad3c761b205f05
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.0"
+  audioplayers_darwin:
+    dependency: transitive
+    description:
+      name: audioplayers_darwin
+      sha256: "1ca553add991384ecf421b9569da850f3ab2472ffb83f6970b0416365abc51be"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.5.0"
+  audioplayers_linux:
+    dependency: transitive
+    description:
+      name: audioplayers_linux
+      sha256: "15178b726b7cdee5364d0463c8d445630c4e0fb7d26612b73c767e7d25de9417"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.0"
+  audioplayers_platform_interface:
+    dependency: transitive
+    description:
+      name: audioplayers_platform_interface
+      sha256: "765f6f0e6dca55cb471c9483fc77700564b3484d19198aca4ebb5147c6c85acb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.2.0"
+  audioplayers_web:
+    dependency: transitive
+    description:
+      name: audioplayers_web
+      sha256: ae1e0103c865a03e273f6d13d97b93f5595eac09915729cd5e37ef96e2857319
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.0"
+  audioplayers_windows:
+    dependency: transitive
+    description:
+      name: audioplayers_windows
+      sha256: a70ae82bba2dfcb6eb03dd4815d737a2d46d33ea5a96a03f535cfcaac490e413
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.1"
+  boolean_selector:
+    dependency: transitive
+    description:
+      name: boolean_selector
+      sha256: "8aab1771e1243a5063b8b0ff68042d67334e3feab9e95b9490f9a6ebf73b42ea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
+  characters:
+    dependency: transitive
+    description:
+      name: characters
+      sha256: faf38497bda5ead2a8c7615f4f7939df04333478bf32e4173fcb06d428b5716b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
+  clock:
+    dependency: transitive
+    description:
+      name: clock
+      sha256: e51d50bca3217c9a9fa2b41a30e4a38971133f5f9ec7a3d57bae095007f1d28e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
+  code_assets:
+    dependency: transitive
+    description:
+      name: code_assets
+      sha256: bf394f466ba9205f1812a0433b392d6af280f155f56651eda7c18cc32ed493b8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
+  collection:
+    dependency: transitive
+    description:
+      name: collection
+      sha256: "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.19.1"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
+  cupertino_icons:
+    dependency: "direct main"
+    description:
+      name: cupertino_icons
+      sha256: "41e005c33bd814be4d3096aff55b1908d419fde52ca656c8c47719ec745873cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.9"
+  fake_async:
+    dependency: transitive
+    description:
+      name: fake_async
+      sha256: "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.3"
+  ffi:
+    dependency: transitive
+    description:
+      name: ffi
+      sha256: "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  file:
+    dependency: transitive
+    description:
+      name: file
+      sha256: a3b4f84adafef897088c160faf7dfffb7696046cb13ae90b508c2cbc95d3b8d4
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.1"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      sha256: b6dc7065e46c974bc7c5f143080a6764ec7a4be6da1285ececdc37be96de53be
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  flame:
+    dependency: "direct main"
+    description:
+      name: flame
+      sha256: b4d7e59b81f35a426f8b39dcec10175180b9c2984b2b2e619021660d8951307c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.38.2"
+  flame_audio:
+    dependency: "direct main"
+    description:
+      name: flame_audio
+      sha256: f88692222444231cdb380af8ca087b521da26773c1bb4d1da33a24c953d3b3ea
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.12.2"
+  flutter:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      sha256: "3105dc8492f6183fb076ccf1f351ac3d60564bff92e20bfc4af9cc1651f4e7e1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.0"
+  flutter_riverpod:
+    dependency: "direct main"
+    description:
+      name: flutter_riverpod
+      sha256: "9532ee6db4a943a1ed8383072a2e3eeda041db5657cdf6d2acecf3c21ecbe7e1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
+  flutter_test:
+    dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  hive:
+    dependency: "direct main"
+    description:
+      name: hive
+      sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
+  hive_flutter:
+    dependency: "direct main"
+    description:
+      name: hive_flutter
+      sha256: dca1da446b1d808a51689fb5d0c6c9510c0a2ba01e22805d492c73b68e33eecc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
+  hooks:
+    dependency: transitive
+    description:
+      name: hooks
+      sha256: "9a62a50b50b769a737bc0a8ff381f333529df3ab746b2f6b02e83760231455ba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      sha256: "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.2"
+  jni:
+    dependency: transitive
+    description:
+      name: jni
+      sha256: "6b9ca0602fef0230e83149afbe3f9f8227e94f2bbe84a1da4f14d699742f402d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
+  jni_flutter:
+    dependency: transitive
+    description:
+      name: jni_flutter
+      sha256: b2310cdd4c18c65c081ab141a41efa94aa26c65431803703ece51996f174f351
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
+  jni_util:
+    dependency: transitive
+    description:
+      name: jni_util
+      sha256: "1ba86da04a5f2bf18fde2edb235587e70c5b0fc5bd4ba955f46b00942c3fc35f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  leak_tracker:
+    dependency: transitive
+    description:
+      name: leak_tracker
+      sha256: "33e2e26bdd85a0112ec15400c8cbffea70d0f9c3407491f672a2fad47915e2de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.2"
+  leak_tracker_flutter_testing:
+    dependency: transitive
+    description:
+      name: leak_tracker_flutter_testing
+      sha256: "1dbc140bb5a23c75ea9c4811222756104fbcd1a27173f0c34ca01e16bea473c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.10"
+  leak_tracker_testing:
+    dependency: transitive
+    description:
+      name: leak_tracker_testing
+      sha256: "8d5a2d49f4a66b49744b23b018848400d23e54caf9463f4eb20df3eb8acb2eb1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      sha256: "12f842a479589fea194fe5c5a3095abc7be0c1f2ddfa9a0e76aed1dbd26a87df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: c8245ada5f1717ed44271ed1c26b8ce85ca3228fd2ffdb75468ab01979309d61
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0"
+  matcher:
+    dependency: transitive
+    description:
+      name: matcher
+      sha256: "31bd099b47c10cd1aeb55146a2d46ce0277630ecef3f7dae54ad7873f36696cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.20"
+  material_color_utilities:
+    dependency: transitive
+    description:
+      name: material_color_utilities
+      sha256: "9c337007e82b1889149c82ed242ed1cb24a66044e30979c44912381e9be4c48b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.0"
+  meta:
+    dependency: transitive
+    description:
+      name: meta
+      sha256: c82594181e3312f3d0695fc95aaaf7758d75b8d4ae2bbecf223b9fd5109a059d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.18.3"
+  objective_c:
+    dependency: transitive
+    description:
+      name: objective_c
+      sha256: b7fb95a6d9a4f009edd63dc5ac69f07420b23a16161c6dd8660290b59c602e8e
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.5.0"
+  ordered_set:
+    dependency: transitive
+    description:
+      name: ordered_set
+      sha256: ca415a0e28b8e8f5e284af4b7d1b189d2d09af6d2082532ddaec54473f67d226
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.0.1"
+  package_config:
+    dependency: transitive
+    description:
+      name: package_config
+      sha256: ffcf4cf3d6c0b74ac43708d9f56625506e8a68aa935abe9d267a7330f320eb5d
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  path:
+    dependency: transitive
+    description:
+      name: path
+      sha256: "75cca69d1490965be98c73ceaea117e8a04dd21217b37b292c9ddbec0d955bc5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.1"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      sha256: a7f4874f987173da295a61c181b8ee71dab59b332a486b391babf26a1b884825
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.6"
+  path_provider_android:
+    dependency: transitive
+    description:
+      name: path_provider_android
+      sha256: "69cbd515a62b94d32a7944f086b2f82b4ac40a1d45bebfc00813a430ab2dabcd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+  path_provider_foundation:
+    dependency: transitive
+    description:
+      name: path_provider_foundation
+      sha256: "2a376b7d6392d80cd3705782d2caa734ca4727776db0b6ec36ef3f1855197699"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.0"
+  path_provider_linux:
+    dependency: transitive
+    description:
+      name: path_provider_linux
+      sha256: "58c2005f147315b11e9b4a7bc889cd5203e250cba8e3f012dae259b4972b5c16"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
+  path_provider_platform_interface:
+    dependency: transitive
+    description:
+      name: path_provider_platform_interface
+      sha256: "484838772624c3a4b94f1e44a3e19897fee738f2d5c4ce448443b0417f7c9dda"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
+  path_provider_windows:
+    dependency: transitive
+    description:
+      name: path_provider_windows
+      sha256: bd6f00dbd873bfb70d0761682da2b3a2c2fccc2b9e84c495821639601d81afe7
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      sha256: a36d119c13416516a7b5913fbe8af8531e11633d784c550b2125f76c758524ec
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
+  pub_semver:
+    dependency: transitive
+    description:
+      name: pub_semver
+      sha256: "261236774e8b1d69cfc6b9eabbc96c40f25e7a2d6b171f3385d4f65d5734fb24"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
+  record_use:
+    dependency: transitive
+    description:
+      name: record_use
+      sha256: "2551bd8eecfe95d14ae75f6021ad0248be5c27f138c2ec12fcb52b500b3ba1ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
+  riverpod:
+    dependency: transitive
+    description:
+      name: riverpod
+      sha256: "59062512288d3056b2321804332a13ffdd1bf16df70dcc8e506e411280a72959"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
+  sky_engine:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  source_span:
+    dependency: transitive
+    description:
+      name: source_span
+      sha256: "56a02f1f4cd1a2d96303c0144c93bd6d909eea6bee6bf5a0e0b685edbd4c47ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.10.2"
+  stack_trace:
+    dependency: transitive
+    description:
+      name: stack_trace
+      sha256: "277654b3034d17ac6f9f1cb5595db011b1d5d41e8806866db28e0abaa101c490"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.12.2"
+  state_notifier:
+    dependency: transitive
+    description:
+      name: state_notifier
+      sha256: b8677376aa54f2d7c58280d5a007f9e8774f1968d1fb1c096adcb4792fba29bb
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  stream_channel:
+    dependency: transitive
+    description:
+      name: stream_channel
+      sha256: "969e04c80b8bcdf826f8f16579c7b14d780458bd97f56d107d3950fdbeef059d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.4"
+  string_scanner:
+    dependency: transitive
+    description:
+      name: string_scanner
+      sha256: "921cd31725b72fe181906c6a94d987c78e3b98c2e205b397ea399d4054872b43"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "397b146f97613b83d84bdccb439bc8d0f3aebb6c1d14a9641e6f24201c490b2d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.2"
+  term_glyph:
+    dependency: transitive
+    description:
+      name: term_glyph
+      sha256: "7f554798625ea768a7518313e58f83891c7f5024f88e46e7182a4558850a4b8e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.2"
+  test_api:
+    dependency: transitive
+    description:
+      name: test_api
+      sha256: "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.12"
+  typed_data:
+    dependency: transitive
+    description:
+      name: typed_data
+      sha256: f9049c039ebfeb4cf7a7104a675823cd72dba8297f264b6637062516699fa006
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
+  url_launcher:
+    dependency: "direct main"
+    description:
+      name: url_launcher
+      sha256: f6a7e5c4835bb4e3026a04793a4199ca2d14c739ec378fdfe23fc8075d0439f8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.2"
+  url_launcher_android:
+    dependency: transitive
+    description:
+      name: url_launcher_android
+      sha256: "611e87fb320b70d1dd721dc46af89c98aceccea9b31fde49e084591414e0c610"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.33"
+  url_launcher_ios:
+    dependency: transitive
+    description:
+      name: url_launcher_ios
+      sha256: "8faa1aab294f1ab4040b43660c887b0418d5fa4f0cffef76a484e6aa1092eb4a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.4.2"
+  url_launcher_linux:
+    dependency: transitive
+    description:
+      name: url_launcher_linux
+      sha256: "10f86fef4c2c43563fa6c211ff9cf757adf4d3ab762c56bd430664a947d70cd0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.3"
+  url_launcher_macos:
+    dependency: transitive
+    description:
+      name: url_launcher_macos
+      sha256: "5e835a3b869c2d70325349c81c5a45c28e20791265b67b2669da6b08c5cd5201"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.6"
+  url_launcher_platform_interface:
+    dependency: transitive
+    description:
+      name: url_launcher_platform_interface
+      sha256: "552f8a1e663569be95a8190206a38187b531910283c3e982193e4f2733f01029"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
+  url_launcher_web:
+    dependency: transitive
+    description:
+      name: url_launcher_web
+      sha256: "85c81589622fbc87c1c683aaea164d3604a7777495a79d91e39ffcdec39ddb34"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.3"
+  url_launcher_windows:
+    dependency: transitive
+    description:
+      name: url_launcher_windows
+      sha256: "6c5ad3f22cd4c38e089b81963b3cd7bb83b111b2df5dce008bb066162f42e429"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.6"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "9b129329f58692f6e6578329498a8fe9fbe98f090beb764ffbb8ee2eadd01dcd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.0"
+  vector_math:
+    dependency: transitive
+    description:
+      name: vector_math
+      sha256: "1d774bbdf6b72a0b12122fc1560c9c2d2a67db5a4a4cc2bd8a5c990ab20e3188"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
+  vm_service:
+    dependency: transitive
+    description:
+      name: vm_service
+      sha256: "5f37239c4851efcef929cea7824e76df7f2f0970aef85d66bbc430afa40e72f0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "15.3.0"
+  web:
+    dependency: transitive
+    description:
+      name: web
+      sha256: "868d88a33d8a87b18ffc05f9f030ba328ffefba92d6c127917a2ba740f9cfe4a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  xdg_directories:
+    dependency: transitive
+    description:
+      name: xdg_directories
+      sha256: "7a3f37b05d989967cdddcbb571f1ea834867ae2faa29725fd085180e0883aa15"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      sha256: f67cdd8e07d3c6329146aaef1ba043542b3134c12489f553ca9a7435d1068aea
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.4"
+sdks:
+  dart: ">=3.12.2 <4.0.0"
+  flutter: ">=3.44.0"
+
+
+================================================================================
 FILE:     pubspec.yaml
 SIZE:     4.00 KB (4094 bytes)
 LINES:    103
@@ -7590,10 +9045,10 @@ flutter:
 
 ================================================================================
 FILE:     scripts/export.sh
-SIZE:     7.67 KB (7856 bytes)
-LINES:    260
-SHA256:   2eff0526d4293c2943ece1c92fb4fc071d7da99e0536d4ee0c1417a15154ac3f
-MODIFIED: 2026-10-14 11:27:50 (UTC)
+SIZE:     7.75 KB (7939 bytes)
+LINES:    261
+SHA256:   5a447556f9f61194b30189c1b16bf590b69a5f2ac7617bbaf50df3c28b31455d
+MODIFIED: 2026-10-14 11:46:10 (UTC)
 ================================================================================
 
 #!/usr/bin/env bash
@@ -7604,10 +9059,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_PATH="${1:-$SCRIPT_DIR/..}"
 OUTPUT_FILE="${2:-docs/llm/dump.txt}"
 
-INCLUDE_EXTENSIONS="cs csproj slnx props targets json razor js mjs css html svg yml yaml sh md toml kt kts gradle properties yaml dart"
-INCLUDE_NAMES=".gitignore .gitattributes .editorconfig"
-EXCLUDE_NAMES="package-lock.json LICENSE"
-EXCLUDE_DIRS="bin obj .vs .git node_modules .vscode .idea TestResults artifacts coverage .velixir"
+INCLUDE_EXTENSIONS="dart yaml yml kt kts java gradle properties xml json arb lock md txt sh toml pro cfg html css js svg plist swift xcconfig cmake"
+INCLUDE_NAMES=".gitignore .gitattributes .editorconfig .metadata"
+EXCLUDE_NAMES="LICENSE"
+EXCLUDE_DIRS="build .dart_tool .gradle .pub-cache .git .idea .vscode .cxx Pods ephemeral coverage node_modules"
 EXCLUDE_PREFIXES="docs/llm/"
 
 PROJECT_PATH="$(cd "$PROJECT_PATH" && pwd)"
@@ -7773,7 +9228,8 @@ if in_git_repo; then
         GIT_DIRTY="no"
     fi
 fi
-DOTNET_VERSION="$(dotnet --version 2>/dev/null || echo 'not installed')"
+FLUTTER_VERSION="$( (flutter --version 2>/dev/null || true) | awk 'NR==1')"
+[ -n "$FLUTTER_VERSION" ] || FLUTTER_VERSION="not installed"
 
 TMP_OUTPUT="$(mktemp "$OUTPUT_DIR/.export.XXXXXX")"
 
@@ -7785,7 +9241,7 @@ TMP_OUTPUT="$(mktemp "$OUTPUT_DIR/.export.XXXXXX")"
     echo "Git Commit:      $GIT_COMMIT"
     echo "Git Branch:      $GIT_BRANCH"
     echo "Git Dirty:       $GIT_DIRTY"
-    echo ".NET SDK:        $DOTNET_VERSION"
+    echo "Flutter:         $FLUTTER_VERSION"
     echo "Files Exported:  $FILE_COUNT"
     echo "==============================================================================="
     echo
@@ -7859,9 +9315,9 @@ log "$CYAN" "Total source size: ${TOTAL_MB} MB across ${FILE_COUNT} files"
 
 
 ===============================================================================
-EXPORT COMPLETED (UTC): 2026-10-14 11:31:55
-Total Files Exported:   45
-Total Source Size:      0.24 MB (252174 bytes)
+EXPORT COMPLETED (UTC): 2026-10-14 11:48:29
+Total Files Exported:   59
+Total Source Size:      0.28 MB (294820 bytes)
 Output File:            /home/kushal/src/dart/match3/docs/llm/dump.txt
 ===============================================================================
-DUMP SHA256 (of all lines above this one): 588f21b8713beba9cc4dc137740435bd0b08bdac375d30156d01c36fc9af162a
+DUMP SHA256 (of all lines above this one): 559a0d5588ef0e38bd75a5b395dcc2ef7320f9c2cca8d9b6410b9b5e932b2f80
