@@ -1,0 +1,136 @@
+kushal@fedora:~$ mkdir -p ~/src/dart; cd ~/src/dart; time git clone --verbose https://github.com/sidhant947/match3
+Cloning into 'match3'...
+POST git-upload-pack (181 bytes)
+POST git-upload-pack (758 bytes)
+remote: Enumerating objects: 446, done.
+remote: Counting objects: 100% (446/446), done.
+remote: Compressing objects: 100% (236/236), done.
+remote: Total 446 (delta 145), reused 425 (delta 124), pack-reused 0 (from 0)
+Receiving objects: 100% (446/446), 1.09 MiB | 6.09 MiB/s, done.
+Resolving deltas: 100% (145/145), done.
+
+real	0m0.451s
+user	0m0.035s
+sys	0m0.032s
+kushal@fedora:~/src/dart$ cd ~/src/dart/match3/; time bash export.sh
+Starting project export...
+Project Path: /home/kushal/src/dart
+Output File:  /home/kushal/src/dart/docs/llm/dump.txt
+Not a git repo; falling back to find...
+Found 17 files to export
+Processing (1/17): match3/.github/FUNDING.yml
+Processing (2/17): match3/.github/ISSUE_TEMPLATE/bug_report.md
+Processing (3/17): match3/.github/ISSUE_TEMPLATE/feature_request.md
+Processing (4/17): match3/.github/workflows/build.yml
+Processing (5/17): match3/.github/workflows/test.yml
+Processing (6/17): match3/.gitignore
+Processing (7/17): match3/AI-DECLARATION.md
+Processing (8/17): match3/README.md
+Processing (9/17): match3/analysis_options.yaml
+Processing (10/17): match3/android/.gitignore
+Processing (11/17): match3/android/app/build.gradle.kts
+Processing (12/17): match3/android/build.gradle.kts
+Processing (13/17): match3/android/gradle.properties
+Processing (14/17): match3/android/gradle/wrapper/gradle-wrapper.properties
+Processing (15/17): match3/android/settings.gradle.kts
+Processing (16/17): match3/export.sh
+Processing (17/17): match3/pubspec.yaml
+
+Export completed successfully!
+Output file: /home/kushal/src/dart/docs/llm/dump.txt
+Total source size: 0.02 MB across 17 files
+
+real	0m0.540s
+user	0m0.247s
+sys	0m0.287s
+kushal@fedora:~/src/dart/match3$ cd ~/src/dart/match3/; time bash scripts/export.sh
+Starting project export...
+Project Path: /home/kushal/src/dart/match3
+Output File:  /home/kushal/src/dart/match3/docs/llm/dump.txt
+Listing files via git...
+Found 17 files to export
+Processing (1/17): .github/FUNDING.yml
+Processing (2/17): .github/ISSUE_TEMPLATE/bug_report.md
+Processing (3/17): .github/ISSUE_TEMPLATE/feature_request.md
+Processing (4/17): .github/workflows/build.yml
+Processing (5/17): .github/workflows/test.yml
+Processing (6/17): .gitignore
+Processing (7/17): AI-DECLARATION.md
+Processing (8/17): README.md
+Processing (9/17): analysis_options.yaml
+Processing (10/17): android/.gitignore
+Processing (11/17): android/app/build.gradle.kts
+Processing (12/17): android/build.gradle.kts
+Processing (13/17): android/gradle.properties
+Processing (14/17): android/gradle/wrapper/gradle-wrapper.properties
+Processing (15/17): android/settings.gradle.kts
+Processing (16/17): pubspec.yaml
+Processing (17/17): scripts/export.sh
+
+Export completed successfully!
+Output file: /home/kushal/src/dart/match3/docs/llm/dump.txt
+Total source size: 0.02 MB across 17 files
+
+real	0m0.436s
+user	0m0.253s
+sys	0m0.243s
+kushal@fedora:~/src/dart/match3$ cd ~/src/dart/match3/; time bash scripts/export.sh
+Starting project export...
+Project Path: /home/kushal/src/dart/match3
+Output File:  /home/kushal/src/dart/match3/docs/llm/dump.txt
+Listing files via git...
+Found 45 files to export
+Processing (1/45): .github/FUNDING.yml
+Processing (2/45): .github/ISSUE_TEMPLATE/bug_report.md
+Processing (3/45): .github/ISSUE_TEMPLATE/feature_request.md
+Processing (4/45): .github/workflows/build.yml
+Processing (5/45): .github/workflows/test.yml
+Processing (6/45): .gitignore
+Processing (7/45): AI-DECLARATION.md
+Processing (8/45): README.md
+Processing (9/45): analysis_options.yaml
+Processing (10/45): android/.gitignore
+Processing (11/45): android/app/build.gradle.kts
+Processing (12/45): android/app/src/main/kotlin/com/sidhant/match3/MainActivity.kt
+Processing (13/45): android/build.gradle.kts
+Processing (14/45): android/gradle.properties
+Processing (15/45): android/gradle/wrapper/gradle-wrapper.properties
+Processing (16/45): android/settings.gradle.kts
+Processing (17/45): lib/data/repositories/progress_repository.dart
+Processing (18/45): lib/data/services/hive_service.dart
+Processing (19/45): lib/data/services/user_progress_adapter.dart
+Processing (20/45): lib/domain/models/game_state_model.dart
+Processing (21/45): lib/domain/models/gem.dart
+Processing (22/45): lib/domain/models/level_generator.dart
+Processing (23/45): lib/domain/models/level_goal.dart
+Processing (24/45): lib/domain/models/tile_model.dart
+Processing (25/45): lib/domain/models/user_progress.dart
+Processing (26/45): lib/main.dart
+Processing (27/45): lib/ui/core/theme/app_colors.dart
+Processing (28/45): lib/ui/core/theme/app_theme.dart
+Processing (29/45): lib/ui/core/theme/app_theme_skin.dart
+Processing (30/45): lib/ui/core/utils/haptic_service.dart
+Processing (31/45): lib/ui/core/utils/sound_service.dart
+Processing (32/45): lib/ui/core/widgets/custom_gem_painter.dart
+Processing (33/45): lib/ui/core/widgets/tangible_button.dart
+Processing (34/45): lib/ui/features/game/view_models/game_view_model.dart
+Processing (35/45): lib/ui/features/game/views/game_view.dart
+Processing (36/45): lib/ui/features/game/widgets/match3_game.dart
+Processing (37/45): lib/ui/features/home/view_models/home_view_model.dart
+Processing (38/45): lib/ui/features/home/views/home_view.dart
+Processing (39/45): lib/ui/features/how_to_play/views/how_to_play_view.dart
+Processing (40/45): lib/ui/features/level_select/views/level_select_view.dart
+Processing (41/45): lib/ui/features/settings/views/settings_view.dart
+Processing (42/45): lib/ui/features/settings/widgets/custom_emoji_picker.dart
+Processing (43/45): lib/ui/providers.dart
+Processing (44/45): pubspec.yaml
+Processing (45/45): scripts/export.sh
+
+Export completed successfully!
+Output file: /home/kushal/src/dart/match3/docs/llm/dump.txt
+Total source size: 0.24 MB across 45 files
+
+real	0m0.896s
+user	0m0.410s
+sys	0m0.523s
+kushal@fedora:~/src/dart/match3$ 
