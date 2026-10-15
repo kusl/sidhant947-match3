@@ -1,0 +1,43 @@
+name: Update Lockfile
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  lock:
+    name: Update Lockfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Upgrade Dependencies
+        run: |
+          flutter --version
+          flutter pub upgrade
+          flutter pub outdated
+
+      - name: Commit and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- pubspec.lock; then
+            echo "pubspec.lock unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pubspec.lock
+          git commit -m "Update pubspec.lock"
+          git push
+          gh workflow run build.yml --ref "${{ github.ref_name }}"

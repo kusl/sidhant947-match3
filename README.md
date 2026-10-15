@@ -16,6 +16,8 @@ Fork of [sidhant947/match3](https://github.com/sidhant947/match3). An elegant, m
 
 Flutter 3.47 stable (Dart 3.13), AGP 9.4, Gradle 9.8, Kotlin 2.4, JDK 25. Min Android 7.0 (API 24). No Play Store target.
 
+No local Flutter needed. Run **Actions → Update Lockfile** to `flutter pub upgrade`, commit `pubspec.lock` and trigger a release.
+
 ## Features & Key Perks
 
 - **100% Privacy Focused**: No user data collection, no telemetry, and no registration required.
