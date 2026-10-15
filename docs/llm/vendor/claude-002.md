@@ -798,3 +798,7 @@ Claude finished the response
 
 
 
+I made the changes but I don't have flutter installed locally. 
+If I push to github, will the github release action do this for me? 
+how can I have the github release action do all the work for me
+without me having to install flutter sdk locally? 
