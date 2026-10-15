@@ -1,0 +1,86 @@
+﻿2026-10-15T12:30:18.8823815Z ##[group]Run actions/checkout@v7
+2026-10-15T12:30:18.8824671Z with:
+2026-10-15T12:30:18.8825126Z   repository: kusl/sidhant947-match3
+2026-10-15T12:30:18.8829434Z   token: ***
+2026-10-15T12:30:18.8829876Z   ssh-strict: true
+2026-10-15T12:30:18.8830323Z   ssh-user: git
+2026-10-15T12:30:18.8830777Z   persist-credentials: true
+2026-10-15T12:30:18.8831275Z   clean: true
+2026-10-15T12:30:18.8831727Z   sparse-checkout-cone-mode: true
+2026-10-15T12:30:18.8832245Z   fetch-depth: 1
+2026-10-15T12:30:18.8832675Z   fetch-tags: false
+2026-10-15T12:30:18.8833122Z   show-progress: true
+2026-10-15T12:30:18.8833566Z   lfs: false
+2026-10-15T12:30:18.8833978Z   submodules: false
+2026-10-15T12:30:18.8834426Z   set-safe-directory: true
+2026-10-15T12:30:18.8834930Z   allow-unsafe-pr-checkout: false
+2026-10-15T12:30:18.8835676Z ##[endgroup]
+2026-10-15T12:30:18.9846201Z Syncing repository: kusl/sidhant947-match3
+2026-10-15T12:30:18.9849249Z ##[group]Getting Git version info
+2026-10-15T12:30:18.9850655Z Working directory is '/home/runner/work/sidhant947-match3/sidhant947-match3'
+2026-10-15T12:30:18.9852580Z [command]/usr/bin/git version
+2026-10-15T12:30:18.9894957Z git version 2.55.0
+2026-10-15T12:30:18.9915332Z ##[endgroup]
+2026-10-15T12:30:18.9925962Z Temporarily overriding HOME='/home/runner/work/_temp/7d684f09-0133-41f8-a0b4-12567fd3ddf5' before making global git config changes
+2026-10-15T12:30:18.9928510Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-15T12:30:18.9932915Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sidhant947-match3/sidhant947-match3
+2026-10-15T12:30:18.9989877Z Deleting the contents of '/home/runner/work/sidhant947-match3/sidhant947-match3'
+2026-10-15T12:30:18.9993996Z ##[group]Determining repository object format
+2026-10-15T12:30:18.9995950Z ##[endgroup]
+2026-10-15T12:30:18.9997105Z ##[group]Initializing the repository
+2026-10-15T12:30:19.0001924Z [command]/usr/bin/git init /home/runner/work/sidhant947-match3/sidhant947-match3
+2026-10-15T12:30:19.0116887Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-15T12:30:19.0118666Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-15T12:30:19.0119633Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-15T12:30:19.0120376Z hint: call:
+2026-10-15T12:30:19.0120784Z hint:
+2026-10-15T12:30:19.0121318Z hint: 	git config --global init.defaultBranch <name>
+2026-10-15T12:30:19.0121941Z hint:
+2026-10-15T12:30:19.0122518Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-15T12:30:19.0123428Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-15T12:30:19.0124161Z hint:
+2026-10-15T12:30:19.0124575Z hint: 	git branch -m <name>
+2026-10-15T12:30:19.0125075Z hint:
+2026-10-15T12:30:19.0125691Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-15T12:30:19.0130111Z Initialized empty Git repository in /home/runner/work/sidhant947-match3/sidhant947-match3/.git/
+2026-10-15T12:30:19.0141352Z [command]/usr/bin/git remote add origin https://github.com/kusl/sidhant947-match3
+2026-10-15T12:30:19.0192912Z ##[endgroup]
+2026-10-15T12:30:19.0194105Z ##[group]Disabling automatic garbage collection
+2026-10-15T12:30:19.0196569Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-15T12:30:19.0232632Z ##[endgroup]
+2026-10-15T12:30:19.0233762Z ##[group]Setting up auth
+2026-10-15T12:30:19.0234617Z Removing SSH command configuration
+2026-10-15T12:30:19.0238449Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-15T12:30:19.0275779Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-15T12:30:19.0645080Z Removing HTTP extra header
+2026-10-15T12:30:19.0653763Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-15T12:30:19.0698475Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-15T12:30:19.0940589Z Removing includeIf entries pointing to credentials config files
+2026-10-15T12:30:19.0947036Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-15T12:30:19.0986823Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-15T12:30:19.1231593Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-15T12:30:19.1274642Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git.path /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1310822Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1349032Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1386047Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1419990Z ##[endgroup]
+2026-10-15T12:30:19.1420771Z ##[group]Fetching the repository
+2026-10-15T12:30:19.1426167Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +15eadac2471929427f32f8c79e897b2f857676df:refs/remotes/origin/main
+2026-10-15T12:30:19.8377663Z From https://github.com/kusl/sidhant947-match3
+2026-10-15T12:30:19.8380457Z  * [new ref]         15eadac2471929427f32f8c79e897b2f857676df -> origin/main
+2026-10-15T12:30:19.8390734Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-15T12:30:19.8425349Z   origin/main
+2026-10-15T12:30:19.8435974Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-15T12:30:19.8469132Z 15eadac2471929427f32f8c79e897b2f857676df
+2026-10-15T12:30:19.8474667Z ##[endgroup]
+2026-10-15T12:30:19.8477162Z ##[group]Determining the checkout info
+2026-10-15T12:30:19.8480153Z ##[endgroup]
+2026-10-15T12:30:19.8481886Z [command]/usr/bin/git sparse-checkout disable
+2026-10-15T12:30:19.8544127Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-15T12:30:19.8583625Z ##[group]Checking out the ref
+2026-10-15T12:30:19.8587665Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-15T12:30:19.8769363Z Switched to a new branch 'main'
+2026-10-15T12:30:19.8774060Z branch 'main' set up to track 'origin/main'.
+2026-10-15T12:30:19.8783268Z ##[endgroup]
+2026-10-15T12:30:19.8837693Z [command]/usr/bin/git log -1 --format=%H
+2026-10-15T12:30:19.8872876Z 15eadac2471929427f32f8c79e897b2f857676df

@@ -1,0 +1,22 @@
+﻿2026-10-15T12:30:44.2582636Z ##[group]Run if git diff --quiet -- pubspec.lock; then
+2026-10-15T12:30:44.2583112Z [36;1mif git diff --quiet -- pubspec.lock; then[0m
+2026-10-15T12:30:44.2583467Z [36;1m  echo "pubspec.lock unchanged"[0m
+2026-10-15T12:30:44.2583768Z [36;1m  exit 0[0m
+2026-10-15T12:30:44.2583989Z [36;1mfi[0m
+2026-10-15T12:30:44.2584257Z [36;1mgit config user.name "github-actions[bot]"[0m
+2026-10-15T12:30:44.2584739Z [36;1mgit config user.email "41898282+github-actions[bot]@users.noreply.github.com"[0m
+2026-10-15T12:30:44.2585200Z [36;1mgit add pubspec.lock[0m
+2026-10-15T12:30:44.2585510Z [36;1mgit commit -m "Update pubspec.lock"[0m
+2026-10-15T12:30:44.2585821Z [36;1mgit push[0m
+2026-10-15T12:30:44.2586093Z [36;1mgh workflow run build.yml --ref "main"[0m
+2026-10-15T12:30:44.2653389Z shell: /usr/bin/bash -e {0}
+2026-10-15T12:30:44.2653685Z env:
+2026-10-15T12:30:44.2654018Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.47.7-x64/flutter
+2026-10-15T12:30:44.2654450Z   PUB_CACHE: /home/runner/.pub-cache
+2026-10-15T12:30:44.2657326Z   GH_TOKEN: ***
+2026-10-15T12:30:44.2657575Z ##[endgroup]
+2026-10-15T12:30:44.2940334Z [main 2676713] Update pubspec.lock
+2026-10-15T12:30:44.2940761Z  1 file changed, 82 insertions(+), 37 deletions(-)
+2026-10-15T12:30:46.1712775Z To https://github.com/kusl/sidhant947-match3
+2026-10-15T12:30:46.1713383Z    15eadac..2676713  main -> main
+2026-10-15T12:30:47.9211598Z https://github.com/kusl/sidhant947-match3/actions/runs/38735203792

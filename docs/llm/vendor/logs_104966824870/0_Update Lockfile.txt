@@ -1,0 +1,332 @@
+﻿2026-10-15T12:30:17.7515113Z Current runner version: '2.337.0'
+2026-10-15T12:30:17.7546468Z ##[group]Runner Image Provisioner
+2026-10-15T12:30:17.7548563Z Hosted Compute Agent
+2026-10-15T12:30:17.7549673Z Version: 20261002.596
+2026-10-15T12:30:17.7550654Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-15T12:30:17.7551769Z Build Date: 2026-10-02T22:28:27Z
+2026-10-15T12:30:17.7552983Z Worker ID: {18ffdf3d-3e7f-4476-8959-5b6c1350f71a}
+2026-10-15T12:30:17.7554072Z Region: southcentralus
+2026-10-15T12:30:17.7555099Z Cloud: Azure
+2026-10-15T12:30:17.7555976Z ##[endgroup]
+2026-10-15T12:30:17.7558259Z ##[group]Operating System
+2026-10-15T12:30:17.7559315Z Ubuntu
+2026-10-15T12:30:17.7560142Z 24.04.5
+2026-10-15T12:30:17.7561034Z LTS
+2026-10-15T12:30:17.7561865Z ##[endgroup]
+2026-10-15T12:30:17.7562697Z ##[group]Runner Image
+2026-10-15T12:30:17.7563749Z Image: ubuntu-24.04
+2026-10-15T12:30:17.7564649Z Version: 20261004.327.1
+2026-10-15T12:30:17.7566711Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-15T12:30:17.7569474Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-15T12:30:17.7571185Z ##[endgroup]
+2026-10-15T12:30:17.7573187Z ##[group]GITHUB_TOKEN Permissions
+2026-10-15T12:30:17.7577254Z Actions: write
+2026-10-15T12:30:17.7578429Z Contents: write
+2026-10-15T12:30:17.7579291Z Metadata: read
+2026-10-15T12:30:17.7580313Z ##[endgroup]
+2026-10-15T12:30:17.7582955Z Secret source: Actions
+2026-10-15T12:30:17.7584501Z Cache mode: write
+2026-10-15T12:30:17.7585834Z Prepare workflow directory
+2026-10-15T12:30:17.7953155Z Prepare all required actions
+2026-10-15T12:30:17.8000887Z Getting action download info
+2026-10-15T12:30:18.0690130Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-15T12:30:18.1705972Z Download action repository 'subosito/flutter-action@v2' (SHA:1a449444c387b1966244ae4d4f8c696479add0b2)
+2026-10-15T12:30:18.5723071Z Getting action download info
+2026-10-15T12:30:18.6692298Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-15T12:30:18.8090870Z Complete job name: Update Lockfile
+2026-10-15T12:30:18.8823845Z ##[group]Run actions/checkout@v7
+2026-10-15T12:30:18.8824676Z with:
+2026-10-15T12:30:18.8825141Z   repository: kusl/sidhant947-match3
+2026-10-15T12:30:18.8829437Z   token: ***
+2026-10-15T12:30:18.8829879Z   ssh-strict: true
+2026-10-15T12:30:18.8830327Z   ssh-user: git
+2026-10-15T12:30:18.8830780Z   persist-credentials: true
+2026-10-15T12:30:18.8831279Z   clean: true
+2026-10-15T12:30:18.8831730Z   sparse-checkout-cone-mode: true
+2026-10-15T12:30:18.8832248Z   fetch-depth: 1
+2026-10-15T12:30:18.8832678Z   fetch-tags: false
+2026-10-15T12:30:18.8833125Z   show-progress: true
+2026-10-15T12:30:18.8833569Z   lfs: false
+2026-10-15T12:30:18.8833981Z   submodules: false
+2026-10-15T12:30:18.8834429Z   set-safe-directory: true
+2026-10-15T12:30:18.8834933Z   allow-unsafe-pr-checkout: false
+2026-10-15T12:30:18.8835680Z ##[endgroup]
+2026-10-15T12:30:18.9846274Z Syncing repository: kusl/sidhant947-match3
+2026-10-15T12:30:18.9849267Z ##[group]Getting Git version info
+2026-10-15T12:30:18.9850774Z Working directory is '/home/runner/work/sidhant947-match3/sidhant947-match3'
+2026-10-15T12:30:18.9852589Z [command]/usr/bin/git version
+2026-10-15T12:30:18.9894982Z git version 2.55.0
+2026-10-15T12:30:18.9915347Z ##[endgroup]
+2026-10-15T12:30:18.9925980Z Temporarily overriding HOME='/home/runner/work/_temp/7d684f09-0133-41f8-a0b4-12567fd3ddf5' before making global git config changes
+2026-10-15T12:30:18.9928532Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-15T12:30:18.9932925Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sidhant947-match3/sidhant947-match3
+2026-10-15T12:30:18.9989915Z Deleting the contents of '/home/runner/work/sidhant947-match3/sidhant947-match3'
+2026-10-15T12:30:18.9994020Z ##[group]Determining repository object format
+2026-10-15T12:30:18.9995969Z ##[endgroup]
+2026-10-15T12:30:18.9997110Z ##[group]Initializing the repository
+2026-10-15T12:30:19.0001980Z [command]/usr/bin/git init /home/runner/work/sidhant947-match3/sidhant947-match3
+2026-10-15T12:30:19.0116920Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-15T12:30:19.0118676Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-15T12:30:19.0119637Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-15T12:30:19.0120380Z hint: call:
+2026-10-15T12:30:19.0120788Z hint:
+2026-10-15T12:30:19.0121323Z hint: 	git config --global init.defaultBranch <name>
+2026-10-15T12:30:19.0121944Z hint:
+2026-10-15T12:30:19.0122523Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-15T12:30:19.0123433Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-15T12:30:19.0124165Z hint:
+2026-10-15T12:30:19.0124579Z hint: 	git branch -m <name>
+2026-10-15T12:30:19.0125079Z hint:
+2026-10-15T12:30:19.0125695Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-15T12:30:19.0130161Z Initialized empty Git repository in /home/runner/work/sidhant947-match3/sidhant947-match3/.git/
+2026-10-15T12:30:19.0141378Z [command]/usr/bin/git remote add origin https://github.com/kusl/sidhant947-match3
+2026-10-15T12:30:19.0192937Z ##[endgroup]
+2026-10-15T12:30:19.0194112Z ##[group]Disabling automatic garbage collection
+2026-10-15T12:30:19.0196578Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-15T12:30:19.0232655Z ##[endgroup]
+2026-10-15T12:30:19.0233772Z ##[group]Setting up auth
+2026-10-15T12:30:19.0234625Z Removing SSH command configuration
+2026-10-15T12:30:19.0238470Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-15T12:30:19.0275822Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-15T12:30:19.0645160Z Removing HTTP extra header
+2026-10-15T12:30:19.0654727Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-15T12:30:19.0698507Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-15T12:30:19.0940622Z Removing includeIf entries pointing to credentials config files
+2026-10-15T12:30:19.0947065Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-15T12:30:19.0986858Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-15T12:30:19.1231655Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-15T12:30:19.1274721Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git.path /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1310866Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1349064Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1386071Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:19.1420013Z ##[endgroup]
+2026-10-15T12:30:19.1420776Z ##[group]Fetching the repository
+2026-10-15T12:30:19.1426179Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +15eadac2471929427f32f8c79e897b2f857676df:refs/remotes/origin/main
+2026-10-15T12:30:19.8378056Z From https://github.com/kusl/sidhant947-match3
+2026-10-15T12:30:19.8380485Z  * [new ref]         15eadac2471929427f32f8c79e897b2f857676df -> origin/main
+2026-10-15T12:30:19.8390770Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-15T12:30:19.8425395Z   origin/main
+2026-10-15T12:30:19.8436009Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-15T12:30:19.8469176Z 15eadac2471929427f32f8c79e897b2f857676df
+2026-10-15T12:30:19.8474709Z ##[endgroup]
+2026-10-15T12:30:19.8477194Z ##[group]Determining the checkout info
+2026-10-15T12:30:19.8480182Z ##[endgroup]
+2026-10-15T12:30:19.8481923Z [command]/usr/bin/git sparse-checkout disable
+2026-10-15T12:30:19.8544215Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-15T12:30:19.8583660Z ##[group]Checking out the ref
+2026-10-15T12:30:19.8587705Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-15T12:30:19.8769454Z Switched to a new branch 'main'
+2026-10-15T12:30:19.8774173Z branch 'main' set up to track 'origin/main'.
+2026-10-15T12:30:19.8783294Z ##[endgroup]
+2026-10-15T12:30:19.8837895Z [command]/usr/bin/git log -1 --format=%H
+2026-10-15T12:30:19.8872914Z 15eadac2471929427f32f8c79e897b2f857676df
+2026-10-15T12:30:19.9598362Z ##[group]Run subosito/flutter-action@v2
+2026-10-15T12:30:19.9599621Z with:
+2026-10-15T12:30:19.9600390Z   channel: stable
+2026-10-15T12:30:19.9601544Z   cache: true
+2026-10-15T12:30:19.9602467Z   architecture: X64
+2026-10-15T12:30:19.9603336Z   pub-cache-path: default
+2026-10-15T12:30:19.9604248Z   dry-run: false
+2026-10-15T12:30:19.9605574Z   git-source: https://github.com/flutter/flutter.git
+2026-10-15T12:30:19.9606857Z ##[endgroup]
+2026-10-15T12:30:19.9680201Z ##[start-action display=Make yq tool available on Windows runners;id=__subosito_flutter-action.__run]
+2026-10-15T12:30:19.9713212Z ##[end-action id=__subosito_flutter-action.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-15T12:30:19.9719757Z ##[start-action display=Make setup script executable;id=__subosito_flutter-action.__run_2]
+2026-10-15T12:30:19.9779262Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2026-10-15T12:30:19.9780641Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2026-10-15T12:30:20.0026934Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-15T12:30:20.0028412Z ##[endgroup]
+2026-10-15T12:30:20.0191616Z ##[end-action id=__subosito_flutter-action.__run_2;outcome=success;conclusion=success;duration_ms=46]
+2026-10-15T12:30:20.0198586Z ##[start-action display=Set action inputs;id=__subosito_flutter-action.flutter-action]
+2026-10-15T12:30:20.0259932Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2026-10-15T12:30:20.0261177Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2026-10-15T12:30:20.0262243Z [36;1m  -n '' \[0m
+2026-10-15T12:30:20.0263053Z [36;1m  -f '' \[0m
+2026-10-15T12:30:20.0263842Z [36;1m  -a 'X64' \[0m
+2026-10-15T12:30:20.0264645Z [36;1m  -k '' \[0m
+2026-10-15T12:30:20.0265414Z [36;1m  -c '' \[0m
+2026-10-15T12:30:20.0266188Z [36;1m  -l '' \[0m
+2026-10-15T12:30:20.0266977Z [36;1m  -d 'default' \[0m
+2026-10-15T12:30:20.0268284Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2026-10-15T12:30:20.0269452Z [36;1m  stable[0m
+2026-10-15T12:30:20.0338713Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-15T12:30:20.0339944Z ##[endgroup]
+2026-10-15T12:30:20.2902140Z ##[end-action id=__subosito_flutter-action.flutter-action;outcome=success;conclusion=success;duration_ms=270]
+2026-10-15T12:30:20.2912431Z ##[start-action display=Cache Flutter;id=__subosito_flutter-action.cache-flutter]
+2026-10-15T12:30:20.3020735Z ##[group]Run actions/cache@v5
+2026-10-15T12:30:20.3021640Z with:
+2026-10-15T12:30:20.3022519Z   path: /opt/hostedtoolcache/flutter/stable-3.47.7-x64
+2026-10-15T12:30:20.3024149Z   key: flutter-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8
+2026-10-15T12:30:20.3025891Z   enableCrossOsArchive: false
+2026-10-15T12:30:20.3026835Z   fail-on-cache-miss: false
+2026-10-15T12:30:20.3027831Z   lookup-only: false
+2026-10-15T12:30:20.3028648Z   save-always: false
+2026-10-15T12:30:20.3029449Z ##[endgroup]
+2026-10-15T12:30:20.6008783Z Cache hit for: flutter-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8
+2026-10-15T12:30:21.7854306Z Received 75497472 of 1722150969 (4.4%), 71.9 MBs/sec
+2026-10-15T12:30:22.7911587Z Received 234881024 of 1722150969 (13.6%), 111.9 MBs/sec
+2026-10-15T12:30:23.7899882Z Received 385875968 of 1722150969 (22.4%), 122.5 MBs/sec
+2026-10-15T12:30:24.7880386Z Received 532676608 of 1722150969 (30.9%), 126.9 MBs/sec
+2026-10-15T12:30:25.7887212Z Received 704643072 of 1722150969 (40.9%), 134.3 MBs/sec
+2026-10-15T12:30:26.8019378Z Received 868220928 of 1722150969 (50.4%), 137.8 MBs/sec
+2026-10-15T12:30:27.7955028Z Received 1035993088 of 1722150969 (60.2%), 140.9 MBs/sec
+2026-10-15T12:30:28.8030472Z Received 1199570944 of 1722150969 (69.7%), 142.8 MBs/sec
+2026-10-15T12:30:29.7988975Z Received 1342177280 of 1722150969 (77.9%), 142.0 MBs/sec
+2026-10-15T12:30:30.7990059Z Received 1476395008 of 1722150969 (85.7%), 140.6 MBs/sec
+2026-10-15T12:30:31.8019850Z Received 1623195648 of 1722150969 (94.3%), 140.5 MBs/sec
+2026-10-15T12:30:32.3911426Z Received 1722150969 of 1722150969 (100.0%), 141.5 MBs/sec
+2026-10-15T12:30:32.3912366Z Cache Size: ~1642 MB (1722150969 B)
+2026-10-15T12:30:32.4021996Z [command]/usr/bin/tar -xf /home/runner/work/_temp/0bed61c0-ad31-418c-a72a-9beaccd3dd05/cache.tzst -P -C /home/runner/work/sidhant947-match3/sidhant947-match3 --use-compress-program unzstd
+2026-10-15T12:30:36.9650982Z Cache restored successfully
+2026-10-15T12:30:37.0851126Z Cache restored from key: flutter-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8
+2026-10-15T12:30:37.0996922Z ##[end-action id=__subosito_flutter-action.cache-flutter;outcome=success;conclusion=success;duration_ms=16808]
+2026-10-15T12:30:37.1001382Z ##[start-action display=Cache pub dependencies;id=__subosito_flutter-action.cache-pub]
+2026-10-15T12:30:37.1986552Z ##[group]Run actions/cache@v5
+2026-10-15T12:30:37.1986842Z with:
+2026-10-15T12:30:37.1987068Z   path: /home/runner/.pub-cache
+2026-10-15T12:30:37.1988129Z   key: flutter-pub-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-6eec0990052c1cc6bea1b8e0693815d9b1ca89206a60eeec4b7a3b81ccd32211
+2026-10-15T12:30:37.1988979Z   enableCrossOsArchive: false
+2026-10-15T12:30:37.1989245Z   fail-on-cache-miss: false
+2026-10-15T12:30:37.1989499Z   lookup-only: false
+2026-10-15T12:30:37.1989723Z   save-always: false
+2026-10-15T12:30:37.1989946Z ##[endgroup]
+2026-10-15T12:30:37.4921940Z Cache hit for: flutter-pub-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-6eec0990052c1cc6bea1b8e0693815d9b1ca89206a60eeec4b7a3b81ccd32211
+2026-10-15T12:30:38.6622574Z Received 65511306 of 69705610 (94.0%), 62.4 MBs/sec
+2026-10-15T12:30:38.6886217Z Received 69705610 of 69705610 (100.0%), 64.4 MBs/sec
+2026-10-15T12:30:38.6888079Z Cache Size: ~66 MB (69705610 B)
+2026-10-15T12:30:38.6928970Z [command]/usr/bin/tar -xf /home/runner/work/_temp/c7c4a184-aee4-4298-bb23-dcc66767cd3d/cache.tzst -P -C /home/runner/work/sidhant947-match3/sidhant947-match3 --use-compress-program unzstd
+2026-10-15T12:30:39.5590545Z Cache restored successfully
+2026-10-15T12:30:39.5707362Z Cache restored from key: flutter-pub-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-6eec0990052c1cc6bea1b8e0693815d9b1ca89206a60eeec4b7a3b81ccd32211
+2026-10-15T12:30:39.5790678Z ##[end-action id=__subosito_flutter-action.cache-pub;outcome=success;conclusion=success;duration_ms=2478]
+2026-10-15T12:30:39.5793976Z ##[start-action display=Run setup script;id=__subosito_flutter-action.__run_3]
+2026-10-15T12:30:39.5833791Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2026-10-15T12:30:39.5834164Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2026-10-15T12:30:39.5834468Z [36;1m  -n '3.47.7' \[0m
+2026-10-15T12:30:39.5834900Z [36;1m  -a 'x64' \[0m
+2026-10-15T12:30:39.5835228Z [36;1m  -c '/opt/hostedtoolcache/flutter/stable-3.47.7-x64' \[0m
+2026-10-15T12:30:39.5835629Z [36;1m  -d '/home/runner/.pub-cache' \[0m
+2026-10-15T12:30:39.5835918Z [36;1m  stable[0m
+2026-10-15T12:30:39.5908627Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-15T12:30:39.5909011Z ##[endgroup]
+2026-10-15T12:30:39.8132019Z ##[end-action id=__subosito_flutter-action.__run_3;outcome=success;conclusion=success;duration_ms=233]
+2026-10-15T12:30:39.8192999Z ##[group]Run flutter --version
+2026-10-15T12:30:39.8193315Z [36;1mflutter --version[0m
+2026-10-15T12:30:39.8193579Z [36;1mflutter pub upgrade[0m
+2026-10-15T12:30:39.8193857Z [36;1mflutter pub outdated[0m
+2026-10-15T12:30:39.8266688Z shell: /usr/bin/bash -e {0}
+2026-10-15T12:30:39.8266969Z env:
+2026-10-15T12:30:39.8267302Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.47.7-x64/flutter
+2026-10-15T12:30:39.8267915Z   PUB_CACHE: /home/runner/.pub-cache
+2026-10-15T12:30:39.8268216Z ##[endgroup]
+2026-10-15T12:30:40.1020051Z Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
+2026-10-15T12:30:40.1021073Z Framework • revision abaf9c5237 (7 days ago) • 2026-10-08 09:51:21 -0700
+2026-10-15T12:30:40.1022320Z Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (8 days ago) • 2026-10-07 17:09:12.000Z
+2026-10-15T12:30:40.1023314Z Tools • Dart 3.13.5 • DevTools 2.60.0
+2026-10-15T12:30:40.2554808Z Resolving dependencies...
+2026-10-15T12:30:40.6176611Z Downloading packages...
+2026-10-15T12:30:43.1449090Z > code_assets 2.1.0 (was 1.2.1)
+2026-10-15T12:30:43.1449621Z + cupertino_ui 1.1.3
+2026-10-15T12:30:43.1450039Z + flutter_localizations 0.0.0 from sdk flutter
+2026-10-15T12:30:43.1450559Z > flutter_riverpod 3.4.3 (was 2.6.1)
+2026-10-15T12:30:43.1450996Z + hive_ce 2.22.0
+2026-10-15T12:30:43.1451344Z + hive_ce_flutter 2.5.0
+2026-10-15T12:30:43.1451714Z > hooks 2.2.0 (was 2.0.2)
+2026-10-15T12:30:43.1452069Z + intl 0.20.3
+2026-10-15T12:30:43.1452446Z + isolate_channel 0.6.1
+2026-10-15T12:30:43.1452775Z > jni_flutter 1.0.4+1 (was 1.0.3)
+2026-10-15T12:30:43.1453111Z + json_annotation 4.12.0
+2026-10-15T12:30:43.1453480Z + listen 1.0.1
+2026-10-15T12:30:43.1453862Z   material_color_utilities 0.13.0 (0.13.1 available)
+2026-10-15T12:30:43.1454439Z + material_ui 1.7.0
+2026-10-15T12:30:43.1454775Z > meta 1.19.0 (was 1.18.3)
+2026-10-15T12:30:43.1455141Z > objective_c 9.6.2 (was 9.5.0)
+2026-10-15T12:30:43.1455538Z > record_use 1.1.1 (was 0.6.0)
+2026-10-15T12:30:43.1455943Z > riverpod 3.4.3 (was 2.6.1)
+2026-10-15T12:30:43.1456334Z > synchronized 3.5.0 (was 3.4.2)
+2026-10-15T12:30:43.1456743Z   test_api 0.7.12 (0.7.15 available)
+2026-10-15T12:30:43.1457159Z > url_launcher 6.3.3 (was 6.3.2)
+2026-10-15T12:30:43.1457580Z > vector_math 2.4.3 (was 2.4.0)
+2026-10-15T12:30:43.1458175Z These packages are no longer being depended on:
+2026-10-15T12:30:43.1458617Z - cupertino_icons 1.0.9
+2026-10-15T12:30:43.1458966Z - hive 2.2.3
+2026-10-15T12:30:43.1459291Z - hive_flutter 1.1.0
+2026-10-15T12:30:43.1459653Z Changed 23 dependencies!
+2026-10-15T12:30:43.1460211Z 2 packages have newer versions incompatible with dependency constraints.
+2026-10-15T12:30:43.1460871Z Try `flutter pub outdated` for more information.
+2026-10-15T12:30:44.2320724Z Showing outdated packages.
+2026-10-15T12:30:44.2321336Z [*] indicates versions that are not the latest available.
+2026-10-15T12:30:44.2321747Z 
+2026-10-15T12:30:44.2322032Z Package Name              Current  Upgradable  Resolvable  Latest  
+2026-10-15T12:30:44.2322474Z 
+2026-10-15T12:30:44.2322657Z direct dependencies: all up-to-date.
+2026-10-15T12:30:44.2322944Z 
+2026-10-15T12:30:44.2323108Z dev_dependencies: all up-to-date.
+2026-10-15T12:30:44.2323373Z 
+2026-10-15T12:30:44.2323543Z transitive dependencies: 
+2026-10-15T12:30:44.2324048Z material_color_utilities  *0.13.0  *0.13.0     *0.13.0     0.13.1  
+2026-10-15T12:30:44.2324676Z test_api                  *0.7.12  *0.7.12     *0.7.12     0.7.15  
+2026-10-15T12:30:44.2325710Z all dependencies are up-to-date.
+2026-10-15T12:30:44.2582651Z ##[group]Run if git diff --quiet -- pubspec.lock; then
+2026-10-15T12:30:44.2583114Z [36;1mif git diff --quiet -- pubspec.lock; then[0m
+2026-10-15T12:30:44.2583469Z [36;1m  echo "pubspec.lock unchanged"[0m
+2026-10-15T12:30:44.2583771Z [36;1m  exit 0[0m
+2026-10-15T12:30:44.2583990Z [36;1mfi[0m
+2026-10-15T12:30:44.2584260Z [36;1mgit config user.name "github-actions[bot]"[0m
+2026-10-15T12:30:44.2584741Z [36;1mgit config user.email "41898282+github-actions[bot]@users.noreply.github.com"[0m
+2026-10-15T12:30:44.2585203Z [36;1mgit add pubspec.lock[0m
+2026-10-15T12:30:44.2585513Z [36;1mgit commit -m "Update pubspec.lock"[0m
+2026-10-15T12:30:44.2585823Z [36;1mgit push[0m
+2026-10-15T12:30:44.2586095Z [36;1mgh workflow run build.yml --ref "main"[0m
+2026-10-15T12:30:44.2653399Z shell: /usr/bin/bash -e {0}
+2026-10-15T12:30:44.2653688Z env:
+2026-10-15T12:30:44.2654021Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.47.7-x64/flutter
+2026-10-15T12:30:44.2654503Z   PUB_CACHE: /home/runner/.pub-cache
+2026-10-15T12:30:44.2657329Z   GH_TOKEN: ***
+2026-10-15T12:30:44.2657577Z ##[endgroup]
+2026-10-15T12:30:44.2940363Z [main 2676713] Update pubspec.lock
+2026-10-15T12:30:44.2940764Z  1 file changed, 82 insertions(+), 37 deletions(-)
+2026-10-15T12:30:46.1712826Z To https://github.com/kusl/sidhant947-match3
+2026-10-15T12:30:46.1713386Z    15eadac..2676713  main -> main
+2026-10-15T12:30:47.9211649Z https://github.com/kusl/sidhant947-match3/actions/runs/38735203792
+2026-10-15T12:30:47.9396402Z Post job cleanup.
+2026-10-15T12:30:47.9400964Z ##[start-action display=Cache pub dependencies;id=__ca8d9a2a-5709-4530-914d-f6b45cf2ecc7.cache-pub]
+2026-10-15T12:30:48.0209231Z Post job cleanup.
+2026-10-15T12:30:48.1557513Z Cache hit occurred on the primary key flutter-pub-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8-6eec0990052c1cc6bea1b8e0693815d9b1ca89206a60eeec4b7a3b81ccd32211, not saving cache.
+2026-10-15T12:30:48.1627670Z ##[end-action id=__ca8d9a2a-5709-4530-914d-f6b45cf2ecc7.cache-pub;outcome=success;conclusion=success;duration_ms=222]
+2026-10-15T12:30:48.1630945Z ##[start-action display=Cache Flutter;id=__ca8d9a2a-5709-4530-914d-f6b45cf2ecc7.cache-flutter]
+2026-10-15T12:30:48.1669829Z Post job cleanup.
+2026-10-15T12:30:48.3049510Z Cache hit occurred on the primary key flutter-linux-stable-3.47.7-x64-abaf9c523780a608bd46686fd5e53740a07077f8, not saving cache.
+2026-10-15T12:30:48.3133850Z ##[end-action id=__ca8d9a2a-5709-4530-914d-f6b45cf2ecc7.cache-flutter;outcome=success;conclusion=success;duration_ms=150]
+2026-10-15T12:30:48.3224379Z Post job cleanup.
+2026-10-15T12:30:48.4086637Z [command]/usr/bin/git version
+2026-10-15T12:30:48.4135064Z git version 2.55.0
+2026-10-15T12:30:48.4183923Z Temporarily overriding HOME='/home/runner/work/_temp/00c6e348-0851-47aa-befc-ff72562f0f4a' before making global git config changes
+2026-10-15T12:30:48.4185147Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-15T12:30:48.4189509Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sidhant947-match3/sidhant947-match3
+2026-10-15T12:30:48.4226043Z Removing SSH command configuration
+2026-10-15T12:30:48.4233358Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-15T12:30:48.4271565Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-15T12:30:48.4537542Z Removing HTTP extra header
+2026-10-15T12:30:48.4544727Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-15T12:30:48.4583334Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-15T12:30:48.4852746Z Removing includeIf entries pointing to credentials config files
+2026-10-15T12:30:48.4861266Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-15T12:30:48.4898655Z includeif.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git.path
+2026-10-15T12:30:48.4899349Z includeif.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git/worktrees/*.path
+2026-10-15T12:30:48.4900041Z includeif.gitdir:/github/workspace/.git.path
+2026-10-15T12:30:48.4900654Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-15T12:30:48.4908264Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git.path
+2026-10-15T12:30:48.4938542Z /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:48.4959354Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-20649750\-c402\-4e62\-b534\-d46e4cd6252b\.config
+2026-10-15T12:30:48.5010578Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git/worktrees/*.path
+2026-10-15T12:30:48.5043228Z /home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:48.5052824Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/sidhant947-match3/sidhant947-match3/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-20649750\-c402\-4e62\-b534\-d46e4cd6252b\.config
+2026-10-15T12:30:48.5113223Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-15T12:30:48.5145069Z /github/runner_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:48.5153429Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-20649750\-c402\-4e62\-b534\-d46e4cd6252b\.config
+2026-10-15T12:30:48.5194722Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-15T12:30:48.5224091Z /github/runner_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config
+2026-10-15T12:30:48.5232459Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-20649750\-c402\-4e62\-b534\-d46e4cd6252b\.config
+2026-10-15T12:30:48.5274888Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-15T12:30:48.5518214Z Removing credentials config '/home/runner/work/_temp/git-credentials-20649750-c402-4e62-b534-d46e4cd6252b.config'
+2026-10-15T12:30:48.5676241Z Cleaning up orphan processes
