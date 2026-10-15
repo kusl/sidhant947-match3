@@ -1,8 +1,8 @@
 ===============================================================================
 PROJECT EXPORT
-Generated (UTC): 2026-10-15 12:01:52
+Generated (UTC): 2026-10-15 12:17:42
 Project Path:    /home/kushal/src/dart/match3
-Git Commit:      220029185c212402647c67784d98d963fc90969e
+Git Commit:      1a3652b3f78e880629082c8b4df51cba3f0204f3
 Git Branch:      main
 Git Dirty:       no
 Flutter:         not installed
@@ -135,7 +135,7 @@ FILE:     .github/FUNDING.yml
 SIZE:     0.94 KB (965 bytes)
 LINES:    15
 SHA256:   b541824304a634b8c22695049b1c1c13aac7b95a4802c5018798a80e57cbe9b2
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 # These are supported funding model platforms
@@ -160,7 +160,7 @@ FILE:     .github/ISSUE_TEMPLATE/bug_report.md
 SIZE:     0.56 KB (570 bytes)
 LINES:    25
 SHA256:   63e8519e7d9ab861a76aa3508945b90b7f7961e984481324bac25523708d337b
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 ---
@@ -195,7 +195,7 @@ FILE:     .github/ISSUE_TEMPLATE/feature_request.md
 SIZE:     0.48 KB (492 bytes)
 LINES:    17
 SHA256:   48672bf2a61e373b7d5483c24527768614ef6863dd1e5d4184242f3980e4634f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 ---
@@ -221,8 +221,8 @@ Add any other context or screenshots about the feature request here.
 FILE:     .github/workflows/build.yml
 SIZE:     2.77 KB (2834 bytes)
 LINES:    85
-SHA256:   e28901e600689b72e76338f834592639433e7e73a68fe1c92e6e1d5bd500cb5a
-MODIFIED: 2026-10-14 11:45:46 (UTC)
+SHA256:   c003eb12c3c5276be1d4dacacda4f5270c471e008ed1341dea884f66dc32fcb8
+MODIFIED: 2026-10-15 12:14:01 (UTC)
 ================================================================================
 
 name: Build and Release
@@ -252,7 +252,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '25'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -314,19 +314,16 @@ jobs:
 
 ================================================================================
 FILE:     .github/workflows/test.yml
-SIZE:     1.15 KB (1181 bytes)
-LINES:    43
-SHA256:   e23f48c3b12117bfcd1f04bb12a191605f0cbd56cd61f46595254d1671971522
-MODIFIED: 2026-10-14 11:10:14 (UTC)
+SIZE:     1.10 KB (1125 bytes)
+LINES:    40
+SHA256:   da4404a03a843d1fc5a903791180c7e19577156b242767c3ddfebae30ab72e40
+MODIFIED: 2026-10-15 12:14:01 (UTC)
 ================================================================================
 
 name: Manual Build Test
 
 on:
   workflow_dispatch:
-
-env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
 
 jobs:
   build:
@@ -340,7 +337,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '25'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -370,7 +367,7 @@ FILE:     .gitignore
 SIZE:     1.02 KB (1044 bytes)
 LINES:    67
 SHA256:   70696c82aac86ed23b8bbdf3fa39443c0ad3f6ee250570572935f197e5c36902
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 # Miscellaneous
@@ -447,7 +444,7 @@ FILE:     .metadata
 SIZE:     0.94 KB (966 bytes)
 LINES:    30
 SHA256:   fbed02053408857758c109778e69b732a7b53baf327646bddbba00687c6e2aba
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 # This file tracks properties of this Flutter project.
@@ -487,7 +484,7 @@ FILE:     AI-DECLARATION.md
 SIZE:     0.72 KB (741 bytes)
 LINES:    21
 SHA256:   8260b7755b812212145815c7bf7a1ad51851e507e1af78d2e34b2ecafbb4e767
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 ---
@@ -515,10 +512,10 @@ If you use AI to help write a contribution, **please just declare it first**. PR
 
 ================================================================================
 FILE:     README.md
-SIZE:     1.65 KB (1685 bytes)
-LINES:    28
-SHA256:   cb9a3cd9bbbc7808a99703408461d13346187ebbca0c37e208f7bc5cbf9fa8b0
-MODIFIED: 2026-10-14 11:47:21 (UTC)
+SIZE:     1.87 KB (1919 bytes)
+LINES:    33
+SHA256:   1a6f69c0773f1d873f2f7b54029d8f17d769ff7e66c8c35b3b3ed9c3d57dd914
+MODIFIED: 2026-10-15 12:14:01 (UTC)
 ================================================================================
 
 # Match 3 - Free Open Source Offline Puzzle Game
@@ -532,7 +529,12 @@ Fork of [sidhant947/match3](https://github.com/sidhant947/match3). An elegant, m
 - **Best-move hints**: the hint simulates every legal swap (or twist) through matches, specials, explosions, obstacles and cascades, and highlights the one that does the most for the current level goal. Moves that complete the goal win outright; then goal progress, then points, specials created and obstacles hit. Refill tiles are unknown, so only deterministic cascades count.
 - **Frozen tiles and crates** can no longer be swapped, matching the hint and twist rules.
 - **Releases**: every push to `main` publishes a full GitHub release `v<pubspec version>.<run number>` with universal and per-ABI APKs.
+- **Dependencies**: Riverpod 3 (legacy providers), `hive_ce` instead of the unmaintained `hive`.
 - `scripts/export.sh` dumps all text sources to `docs/llm/dump.txt` for LLM context.
+
+## Toolchain
+
+Flutter 3.47 stable (Dart 3.13), AGP 9.4, Gradle 9.8, Kotlin 2.4, JDK 25. Min Android 7.0 (API 24). No Play Store target.
 
 ## Features & Key Perks
 
@@ -556,7 +558,7 @@ FILE:     analysis_options.yaml
 SIZE:     1.45 KB (1488 bytes)
 LINES:    33
 SHA256:   5ed5f9266659a3bba9333db3d82cdd7cd78fa4d8283cd9aba5d385ab399f59b3
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 # This file configures the analyzer, which statically analyzes Dart code to
@@ -599,7 +601,7 @@ FILE:     android/.gitignore
 SIZE:     0.25 KB (253 bytes)
 LINES:    14
 SHA256:   b027c9de1011765c015e5819bf857c0d75bfcd0886fb01721c091159012e50f1
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 gradle-wrapper.jar
@@ -620,10 +622,10 @@ key.properties
 
 ================================================================================
 FILE:     android/app/build.gradle.kts
-SIZE:     2.68 KB (2746 bytes)
-LINES:    87
-SHA256:   224cad9dbd09ecc80c3129a882edc2daaff7923ba23b755b137a6b23ef8ad8ff
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SIZE:     2.12 KB (2174 bytes)
+LINES:    80
+SHA256:   17a8ceb46be4cf304489ce2f3d9ba2691378e246a0c84efb7e890de9deb727b6
+MODIFIED: 2026-10-15 12:08:19 (UTC)
 ================================================================================
 
 import java.util.Properties
@@ -631,7 +633,6 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -651,17 +652,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.sidhant.match3"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -679,8 +676,6 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("release")
         }
     }
@@ -690,7 +685,7 @@ android {
         variant.outputs.all {
             val output = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
             val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)
-            val abiName = output.getFilter(com.android.build.OutputFile.ABI)
+            val abiName = output.getFilter("ABI")
             val abiCode = abiCodes[abiName]
             if (abiCode != null) {
                 output.versionCodeOverride = (variant.versionCode) * 10 + abiCode
@@ -698,7 +693,7 @@ android {
         }
     }
 
-    packagingOptions {
+    packaging {
         dex.useLegacyPackaging = true
         jniLibs.useLegacyPackaging = true
     }
@@ -720,7 +715,7 @@ FILE:     android/app/src/debug/AndroidManifest.xml
 SIZE:     0.37 KB (378 bytes)
 LINES:    7
 SHA256:   30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -737,7 +732,7 @@ FILE:     android/app/src/main/AndroidManifest.xml
 SIZE:     2.14 KB (2195 bytes)
 LINES:    45
 SHA256:   1d262d029a5fd0cd941476c1bf3d8574de897b3c8bd2fe53d39eac7375116055
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -792,7 +787,7 @@ FILE:     android/app/src/main/kotlin/com/sidhant/match3/MainActivity.kt
 SIZE:     0.12 KB (120 bytes)
 LINES:    5
 SHA256:   bb5ea8088cc4fd1047165eb3badcf771c3a401f1fd8f8639d6814bd9de37902f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 package com.sidhant.match3
@@ -807,7 +802,7 @@ FILE:     android/app/src/main/res/drawable-v21/launch_background.xml
 SIZE:     0.43 KB (438 bytes)
 LINES:    12
 SHA256:   7ca6d5cec2169c5a98661a119db23a6f3399c8fef2256ff04f3a642831282478
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -829,7 +824,7 @@ FILE:     android/app/src/main/res/drawable/launch_background.xml
 SIZE:     0.42 KB (434 bytes)
 LINES:    12
 SHA256:   94433756fe10005ddd6fc55cc5c0b1e9f3c10b66a08ceac795ece6713d34e28a
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -851,7 +846,7 @@ FILE:     android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
 SIZE:     0.32 KB (328 bytes)
 LINES:    6
 SHA256:   26310833a35076dfe3bdcd9fa469c5c7e36c26623eaf6009bf2d450f779189a3
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -866,7 +861,7 @@ FILE:     android/app/src/main/res/values-night/styles.xml
 SIZE:     0.97 KB (995 bytes)
 LINES:    18
 SHA256:   8c5bad5152f217e837519f9c15211d19f39bd45f5f67faf6dd81cb4b299e518f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -894,7 +889,7 @@ FILE:     android/app/src/main/res/values/styles.xml
 SIZE:     0.97 KB (996 bytes)
 LINES:    18
 SHA256:   937d7c82f539c72eb94fd3a3773f29b3d3fef1997213c92cb632298cedf4bda9
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -922,7 +917,7 @@ FILE:     android/app/src/profile/AndroidManifest.xml
 SIZE:     0.37 KB (378 bytes)
 LINES:    7
 SHA256:   30b0832ed8b92dfbd6ae2abfa939ccf26333d37600056b1572bd4a397a18a74b
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -939,7 +934,7 @@ FILE:     android/build.gradle.kts
 SIZE:     0.52 KB (537 bytes)
 LINES:    24
 SHA256:   6a26dba2cb8dfba1e74f540b0d17a89d96c1301d3c3bfda14348bed257fddcba
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 allprojects {
@@ -973,7 +968,7 @@ FILE:     android/gradle.properties
 SIZE:     0.29 KB (300 bytes)
 LINES:    6
 SHA256:   0f82b18017fba6bb5ce3aa4b2d1a00c9382fc8aae7b1d9326e44b18abd66d80b
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 org.gradle.jvmargs=-Xmx8G -XX:MaxMetaspaceSize=4G -XX:ReservedCodeCacheSize=512m -XX:+HeapDumpOnOutOfMemoryError
@@ -988,23 +983,23 @@ android.builtInKotlin=false
 FILE:     android/gradle/wrapper/gradle-wrapper.properties
 SIZE:     0.20 KB (202 bytes)
 LINES:    5
-SHA256:   3221993eac1057198d652b7437105e2953ca4850d415eb0eb2b9625874fd059e
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SHA256:   4857d852031d04faf9d9cbb38195a36e262719691c27a530f1009802f544e827
+MODIFIED: 2026-10-15 12:08:19 (UTC)
 ================================================================================
 
 distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
-distributionUrl=https\://services.gradle.org/distributions/gradle-9.1.0-all.zip
+distributionUrl=https\://services.gradle.org/distributions/gradle-9.8.1-all.zip
 
 
 ================================================================================
 FILE:     android/settings.gradle.kts
 SIZE:     0.75 KB (771 bytes)
 LINES:    26
-SHA256:   b76d554153a63772dddbe2ee91abdf582f5f871af40698b80a2ef7b70903d96f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SHA256:   63456d33b063c4633c56f418f47f3db9e068ee91d7e2311bea3ac0307d83a11d
+MODIFIED: 2026-10-15 12:08:19 (UTC)
 ================================================================================
 
 pluginManagement {
@@ -1028,8 +1023,8 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "9.0.1" apply false
-    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
+    id("com.android.application") version "9.4.0" apply false
+    id("org.jetbrains.kotlin.android") version "2.4.21" apply false
 }
 
 include(":app")
@@ -1040,7 +1035,7 @@ FILE:     fastlane/metadata/android/en-US/full_description.txt
 SIZE:     0.45 KB (460 bytes)
 LINES:    7
 SHA256:   35fb82404ec4f96773bca0c4381c059d134102ec26fb14e86eb2b05d8dc7f96c
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 Features & Key Perks
@@ -1056,7 +1051,7 @@ FILE:     fastlane/metadata/android/en-US/short_description.txt
 SIZE:     0.04 KB (43 bytes)
 LINES:    1
 SHA256:   50912e871ad73a231abf5bf4ad4b275c469e3295d91783c945d2d2f521e0a28f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 Minimal and open-source Match-3 puzzle game
@@ -1066,7 +1061,7 @@ FILE:     fastlane/metadata/android/en-US/title.txt
 SIZE:     0.01 KB (7 bytes)
 LINES:    1
 SHA256:   240663f82ce5a311324f9844cf4707949d687ed47c8fb29d180cba6fe65cc4fa
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 Match 3
@@ -1076,7 +1071,7 @@ FILE:     lib/data/repositories/progress_repository.dart
 SIZE:     3.11 KB (3180 bytes)
 LINES:    93
 SHA256:   f3e4be0a0d54c7c514e5bab8872183137ce84ed15daf04c8d071053a935d45f1
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/foundation.dart';
@@ -1176,13 +1171,13 @@ class ProgressRepository extends ChangeNotifier {
 
 ================================================================================
 FILE:     lib/data/services/hive_service.dart
-SIZE:     0.76 KB (783 bytes)
-LINES:    29
-SHA256:   f8b91203b4061ad3f0a96440dcefbc2779a4565b51fd148cf4f8be46ae7230dd
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SIZE:     0.77 KB (787 bytes)
+LINES:    27
+SHA256:   412cb1379eaa6002df6e3f11233a49538497b9cb7c3a15b1d4fce5023dbab59c
+MODIFIED: 2026-10-15 12:08:08 (UTC)
 ================================================================================
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import 'package:match3/domain/models/user_progress.dart';
 import 'user_progress_adapter.dart';
@@ -1211,17 +1206,15 @@ class HiveService {
 }
 
 
-
-
 ================================================================================
 FILE:     lib/data/services/user_progress_adapter.dart
-SIZE:     2.42 KB (2477 bytes)
+SIZE:     2.42 KB (2483 bytes)
 LINES:    79
-SHA256:   e16fce780ab33715dbebaa09b8350dd2edea48cbfcbbde0ce5207b618905c684
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SHA256:   082b939d97e5d83613b187588baba088004cbedd0e7cd3b4103b74b22979943e
+MODIFIED: 2026-10-15 12:08:08 (UTC)
 ================================================================================
 
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:match3/domain/models/user_progress.dart';
 
 class UserProgressAdapter extends TypeAdapter<UserProgress> {
@@ -1307,7 +1300,7 @@ FILE:     lib/domain/models/game_state_model.dart
 SIZE:     3.39 KB (3471 bytes)
 LINES:    122
 SHA256:   4f988a6d6d938a5296dafb30dedc26d9b9ca2d7fa8cb5e1e56089b2904f9b319
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/foundation.dart';
@@ -1439,7 +1432,7 @@ FILE:     lib/domain/models/gem.dart
 SIZE:     0.12 KB (119 bytes)
 LINES:    12
 SHA256:   943e1deed4d610e44a67078d7df3135520b3b80442b29d91fa57549c2ba7820c
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 enum GemType {
@@ -1461,7 +1454,7 @@ FILE:     lib/domain/models/level_generator.dart
 SIZE:     12.29 KB (12582 bytes)
 LINES:    375
 SHA256:   e2f2af06bac0d1dda08694075de06170c5514e25921028731e15df3d5c80a368
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:math';
@@ -1846,7 +1839,7 @@ FILE:     lib/domain/models/level_goal.dart
 SIZE:     1.15 KB (1174 bytes)
 LINES:    49
 SHA256:   15de72cff6233d3e9707e739f26a72d8db35ad0a1eb40dd8849a48e1b65eee07
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/foundation.dart';
@@ -1905,7 +1898,7 @@ FILE:     lib/domain/models/tile_model.dart
 SIZE:     1.45 KB (1480 bytes)
 LINES:    69
 SHA256:   f84424e92236c835252bf63001fbc6b3796906cb11efe7acf138e78c3d0951d1
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/foundation.dart';
@@ -1984,7 +1977,7 @@ FILE:     lib/domain/models/user_progress.dart
 SIZE:     3.43 KB (3508 bytes)
 LINES:    100
 SHA256:   bcd8b5005724f35bc851d8c00992b30da13d1e94a7f5ab6dc899dd5eb02dc94d
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/foundation.dart';
@@ -2094,7 +2087,7 @@ FILE:     lib/domain/services/best_move_finder.dart
 SIZE:     13.32 KB (13638 bytes)
 LINES:    427
 SHA256:   aa1908b090f48f212e8a899e3998c158eab20e5babe3c308dc1790ce267ba31c
-MODIFIED: 2026-10-14 11:46:41 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:math';
@@ -2531,7 +2524,7 @@ FILE:     lib/main.dart
 SIZE:     1.25 KB (1280 bytes)
 LINES:    49
 SHA256:   f4461de82a06a99a472a6dc78eaa2a8af45352b54cd56f1cb1c8ffe68fe31b65
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -2590,7 +2583,7 @@ FILE:     lib/ui/core/theme/app_colors.dart
 SIZE:     0.81 KB (825 bytes)
 LINES:    22
 SHA256:   2276ce49b45d0f667512d1d6238dd7d0544dbab61f9ff20eacae78e19c41e497
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -2622,7 +2615,7 @@ FILE:     lib/ui/core/theme/app_theme.dart
 SIZE:     2.69 KB (2751 bytes)
 LINES:    69
 SHA256:   eb4ffefda92de798ac05e83185c853c0761c61329673c4e13fb18c7ef81539a7
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -2701,7 +2694,7 @@ FILE:     lib/ui/core/theme/app_theme_skin.dart
 SIZE:     5.54 KB (5678 bytes)
 LINES:    181
 SHA256:   3ea622f7215ab6f7c5b728c26ec6010ba45258f618ad6388062d0433a551553b
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -2892,7 +2885,7 @@ FILE:     lib/ui/core/utils/haptic_service.dart
 SIZE:     0.55 KB (559 bytes)
 LINES:    25
 SHA256:   c10e0f2728c107d31136ebbd4a662f8df24903ecc1d696bfb985ea6fa9ac728f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/services.dart';
@@ -2927,7 +2920,7 @@ FILE:     lib/ui/core/utils/sound_service.dart
 SIZE:     0.99 KB (1016 bytes)
 LINES:    38
 SHA256:   db977de91eba85a08df26c859289e7b46d20e2d4226a5cd0238a14a58e039339
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flame_audio/flame_audio.dart';
@@ -2975,7 +2968,7 @@ FILE:     lib/ui/core/widgets/custom_gem_painter.dart
 SIZE:     1.80 KB (1842 bytes)
 LINES:    79
 SHA256:   be9511a0542cb6a95551ae8b63ce51a1fb94571bae7758494180b19e9f58abf8
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:math';
@@ -3064,7 +3057,7 @@ FILE:     lib/ui/core/widgets/tangible_button.dart
 SIZE:     5.58 KB (5715 bytes)
 LINES:    179
 SHA256:   dfd42e472dfa7b9fd88e3b336a9a57a98cd02af7ff234f93534a205bddf6bb7d
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -3253,7 +3246,7 @@ FILE:     lib/ui/features/game/view_models/game_view_model.dart
 SIZE:     34.48 KB (35311 bytes)
 LINES:    1007
 SHA256:   d0e15c5d4a04f29311d37788820c084ccf5f9bad1a6dba1e65d1b3dc530e7e73
-MODIFIED: 2026-10-14 11:47:02 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:async';
@@ -4270,7 +4263,7 @@ FILE:     lib/ui/features/game/views/game_view.dart
 SIZE:     35.87 KB (36728 bytes)
 LINES:    895
 SHA256:   e4b198f9265ffa3d5f7ddf4571c897fea49e7089ecd4be43b783ec72931365aa
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:math';
@@ -5175,7 +5168,7 @@ FILE:     lib/ui/features/game/widgets/match3_game.dart
 SIZE:     25.66 KB (26278 bytes)
 LINES:    885
 SHA256:   e95c944015176af35b3d349d6d50f7c5dd0667dfaa6b88119c554e055db29f2b
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:math';
@@ -6067,13 +6060,13 @@ class TwistRotatorComponent extends PositionComponent {
 
 ================================================================================
 FILE:     lib/ui/features/home/view_models/home_view_model.dart
-SIZE:     1.43 KB (1464 bytes)
+SIZE:     1.42 KB (1454 bytes)
 LINES:    57
-SHA256:   5f160ecd17f0bc0ff4cb5dec9ab6884c68c75f0b3cf69354974ab13a5797742c
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SHA256:   4121e9aa84fc5eb8b1c2acc3e5eed4cbd6b055953efd5b3b00ddf6d64bccdae8
+MODIFIED: 2026-10-15 12:08:08 (UTC)
 ================================================================================
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import 'package:match3/data/repositories/progress_repository.dart';
 import 'package:match3/domain/models/user_progress.dart';
@@ -6137,7 +6130,7 @@ FILE:     lib/ui/features/home/views/home_view.dart
 SIZE:     12.53 KB (12833 bytes)
 LINES:    363
 SHA256:   f9aedef6bbefce478a5509bf53e531eeec4a8d59c82f4f0884a528be71fa40c1
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -6510,7 +6503,7 @@ FILE:     lib/ui/features/how_to_play/views/how_to_play_view.dart
 SIZE:     8.05 KB (8239 bytes)
 LINES:    208
 SHA256:   d2c57278f6ecafe9c4c87a9b9f93ffff3a395828fb68a5d405a084282e4c6e45
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -6728,7 +6721,7 @@ FILE:     lib/ui/features/level_select/views/level_select_view.dart
 SIZE:     11.38 KB (11651 bytes)
 LINES:    349
 SHA256:   9a6cb2cdc13f285e1b1d3578030aff99fcebd9687522470ff943e827b6179d76
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'dart:math' as math;
@@ -7087,7 +7080,7 @@ FILE:     lib/ui/features/settings/views/settings_view.dart
 SIZE:     20.68 KB (21180 bytes)
 LINES:    549
 SHA256:   46d6e3cb722eb4a189e2aeb4568927ec82666ca4ea6d291b119e03662da52c83
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -7646,7 +7639,7 @@ FILE:     lib/ui/features/settings/widgets/custom_emoji_picker.dart
 SIZE:     22.55 KB (23096 bytes)
 LINES:    575
 SHA256:   5504b9821e3de9da88bdbcc22c19380c9be083fe34e8f87a7a34845ec8540dc0
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 import 'package:flutter/material.dart';
@@ -8228,13 +8221,14 @@ class _SingleEmojiPickerSheetState extends ConsumerState<SingleEmojiPickerSheet>
 
 ================================================================================
 FILE:     lib/ui/providers.dart
-SIZE:     1.38 KB (1413 bytes)
-LINES:    34
-SHA256:   9fbad4e70f094c462cb6cd3973124e2ebb197fa475d54629ed3d32f18f34395f
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SIZE:     1.43 KB (1460 bytes)
+LINES:    35
+SHA256:   e953eff50bf7dfc6aab53619aaf2e9667ff6658b9bfe3920925f58022b569bf1
+MODIFIED: 2026-10-15 12:08:08 (UTC)
 ================================================================================
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:match3/data/repositories/progress_repository.dart';
 import 'package:match3/data/services/hive_service.dart';
 import 'package:match3/ui/core/theme/app_theme_skin.dart';
@@ -8275,7 +8269,7 @@ FILE:     pubspec.lock
 SIZE:     18.52 KB (18969 bytes)
 LINES:    650
 SHA256:   8f3fd31f24d7af29b539d592057dd8220550c8149e0849e00818878bf8021efd
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 # Generated by pub
@@ -8932,78 +8926,44 @@ sdks:
 
 ================================================================================
 FILE:     pubspec.yaml
-SIZE:     4.00 KB (4094 bytes)
-LINES:    103
-SHA256:   92321e26f1b9e77f124b9e769afc6ce5d569c398acb0c6d520fb19d541326370
-MODIFIED: 2026-10-14 11:04:08 (UTC)
+SIZE:     0.55 KB (567 bytes)
+LINES:    38
+SHA256:   80eef3a91421dc577017802db0775f8e82066783e32d2e21a39f673795a4da49
+MODIFIED: 2026-10-15 12:08:08 (UTC)
 ================================================================================
 
 name: match3
 description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# In Windows, build-name is used as the major, minor, and patch parts
-# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.10+11
 
 environment:
-  sdk: ^3.12.2
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-  flutter_riverpod: ^2.6.1
-  url_launcher: ^6.3.2
-  flame: ^1.38.0
+  hive_ce: ^2.22.0
+  hive_ce_flutter: ^2.5.0
+  flutter_riverpod: ^3.4.3
+  url_launcher: ^6.3.3
+  flame: ^1.38.2
   flame_audio: ^2.12.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^6.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
 
   assets:
     - assets/audio/
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
   fonts:
@@ -9011,44 +8971,13 @@ flutter:
       fonts:
         - asset: assets/fonts/BebasNeue-Regular.ttf
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
-
 
 ================================================================================
 FILE:     scripts/export.sh
 SIZE:     7.75 KB (7939 bytes)
 LINES:    261
 SHA256:   5a447556f9f61194b30189c1b16bf590b69a5f2ac7617bbaf50df3c28b31455d
-MODIFIED: 2026-10-14 11:46:10 (UTC)
+MODIFIED: 2026-10-15 12:08:00 (UTC)
 ================================================================================
 
 #!/usr/bin/env bash
@@ -9315,9 +9244,9 @@ log "$CYAN" "Total source size: ${TOTAL_MB} MB across ${FILE_COUNT} files"
 
 
 ===============================================================================
-EXPORT COMPLETED (UTC): 2026-10-15 12:01:53
+EXPORT COMPLETED (UTC): 2026-10-15 12:17:43
 Total Files Exported:   59
-Total Source Size:      0.28 MB (294820 bytes)
+Total Source Size:      0.28 MB (290946 bytes)
 Output File:            /home/kushal/src/dart/match3/docs/llm/dump.txt
 ===============================================================================
-DUMP SHA256 (of all lines above this one): 8d803391d5787da41b765eea28c29c75d31980d8b788a5968b7a7b10883c99a9
+DUMP SHA256 (of all lines above this one): 3066bf8759735fa184e2ed383fc4e4ac7acdc6952773e2cefcd3cb7cdc9ff9fc
