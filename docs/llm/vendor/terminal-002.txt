@@ -198,3 +198,203 @@ kushal@fedora:~/src/dart/match3$
 
 
 
+kushal@fedora:~/src/dart/match3$ cd ~/src/dart/match3/; time bash scripts/export.sh
+Starting project export...
+Project Path: /home/kushal/src/dart/match3
+Output File:  /home/kushal/src/dart/match3/docs/llm/dump.txt
+Listing files via git...
+Found 59 files to export
+Processing (1/59): .github/FUNDING.yml
+Processing (2/59): .github/ISSUE_TEMPLATE/bug_report.md
+Processing (3/59): .github/ISSUE_TEMPLATE/feature_request.md
+Processing (4/59): .github/workflows/build.yml
+Processing (5/59): .github/workflows/test.yml
+Processing (6/59): .gitignore
+Processing (7/59): .metadata
+Processing (8/59): AI-DECLARATION.md
+Processing (9/59): README.md
+Processing (10/59): analysis_options.yaml
+Processing (11/59): android/.gitignore
+Processing (12/59): android/app/build.gradle.kts
+Processing (13/59): android/app/src/debug/AndroidManifest.xml
+Processing (14/59): android/app/src/main/AndroidManifest.xml
+Processing (15/59): android/app/src/main/kotlin/com/sidhant/match3/MainActivity.kt
+Processing (16/59): android/app/src/main/res/drawable-v21/launch_background.xml
+Processing (17/59): android/app/src/main/res/drawable/launch_background.xml
+Processing (18/59): android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+Processing (19/59): android/app/src/main/res/values-night/styles.xml
+Processing (20/59): android/app/src/main/res/values/styles.xml
+Processing (21/59): android/app/src/profile/AndroidManifest.xml
+Processing (22/59): android/build.gradle.kts
+Processing (23/59): android/gradle.properties
+Processing (24/59): android/gradle/wrapper/gradle-wrapper.properties
+Processing (25/59): android/settings.gradle.kts
+Processing (26/59): fastlane/metadata/android/en-US/full_description.txt
+Processing (27/59): fastlane/metadata/android/en-US/short_description.txt
+Processing (28/59): fastlane/metadata/android/en-US/title.txt
+Processing (29/59): lib/data/repositories/progress_repository.dart
+Processing (30/59): lib/data/services/hive_service.dart
+Processing (31/59): lib/data/services/user_progress_adapter.dart
+Processing (32/59): lib/domain/models/game_state_model.dart
+Processing (33/59): lib/domain/models/gem.dart
+Processing (34/59): lib/domain/models/level_generator.dart
+Processing (35/59): lib/domain/models/level_goal.dart
+Processing (36/59): lib/domain/models/tile_model.dart
+Processing (37/59): lib/domain/models/user_progress.dart
+Processing (38/59): lib/domain/services/best_move_finder.dart
+Processing (39/59): lib/main.dart
+Processing (40/59): lib/ui/core/theme/app_colors.dart
+Processing (41/59): lib/ui/core/theme/app_theme.dart
+Processing (42/59): lib/ui/core/theme/app_theme_skin.dart
+Processing (43/59): lib/ui/core/utils/haptic_service.dart
+Processing (44/59): lib/ui/core/utils/sound_service.dart
+Processing (45/59): lib/ui/core/widgets/custom_gem_painter.dart
+Processing (46/59): lib/ui/core/widgets/tangible_button.dart
+Processing (47/59): lib/ui/features/game/view_models/game_view_model.dart
+Processing (48/59): lib/ui/features/game/views/game_view.dart
+Processing (49/59): lib/ui/features/game/widgets/match3_game.dart
+Processing (50/59): lib/ui/features/home/view_models/home_view_model.dart
+Processing (51/59): lib/ui/features/home/views/home_view.dart
+Processing (52/59): lib/ui/features/how_to_play/views/how_to_play_view.dart
+Processing (53/59): lib/ui/features/level_select/views/level_select_view.dart
+Processing (54/59): lib/ui/features/settings/views/settings_view.dart
+Processing (55/59): lib/ui/features/settings/widgets/custom_emoji_picker.dart
+Processing (56/59): lib/ui/providers.dart
+Processing (57/59): pubspec.lock
+Processing (58/59): pubspec.yaml
+Processing (59/59): scripts/export.sh
+
+Export completed successfully!
+Output file: /home/kushal/src/dart/match3/docs/llm/dump.txt
+Total source size: 0.28 MB across 59 files
+
+real	0m0.868s
+user	0m0.430s
+sys	0m0.618s
+kushal@fedora:~/src/dart/match3$ dnf search flutter
+Updating and loading repositories:
+ Fedora 44 - x86_64 - Updates                                                                                                                                               100% |  27.7 KiB/s |  20.3 KiB |  00m01s
+ RPM Fusion for Fedora 44 - Nonfree - Updates                                                                                                                               100% |   8.5 KiB/s |   6.2 KiB |  00m01s
+ RPM Fusion for Fedora 44 - Nonfree - Steam                                                                                                                                 100% |   7.6 KiB/s |   5.6 KiB |  00m01s
+ RPM Fusion for Fedora 44 - Nonfree - NVIDIA Driver                                                                                                                         100% |  10.7 KiB/s |   5.8 KiB |  00m01s
+ RPM Fusion for Fedora 44 - Nonfree                                                                                                                                         100% |  17.5 KiB/s |   6.1 KiB |  00m00s
+ RPM Fusion for Fedora 44 - Free - Updates                                                                                                                                  100% |   8.8 KiB/s |   3.0 KiB |  00m00s
+ RPM Fusion for Fedora 44 - Free                                                                                                                                            100% |  14.0 KiB/s |   3.2 KiB |  00m00s
+ google-chrome                                                                                                                                                              100% |  15.4 KiB/s |   1.3 KiB |  00m00s
+ Fedora 44 openh264 (From Cisco) - x86_64                                                                                                                                   100% |   4.3 KiB/s | 986.0   B |  00m00s
+ Fedora 44 - x86_64                                                                                                                                                         100% | 133.9 KiB/s |  24.1 KiB |  00m00s
+Repositories loaded.
+No matches found.
+kushal@fedora:~/src/dart/match3$ cd ~/src/dart/match3/; time bash scripts/export.sh
+Starting project export...
+Project Path: /home/kushal/src/dart/match3
+Output File:  /home/kushal/src/dart/match3/docs/llm/dump.txt
+Listing files via git...
+Found 60 files to export
+Processing (1/60): .github/FUNDING.yml
+Processing (2/60): .github/ISSUE_TEMPLATE/bug_report.md
+Processing (3/60): .github/ISSUE_TEMPLATE/feature_request.md
+Processing (4/60): .github/workflows/build.yml
+Processing (5/60): .github/workflows/lock.yml
+Processing (6/60): .github/workflows/test.yml
+Processing (7/60): .gitignore
+Processing (8/60): .metadata
+Processing (9/60): AI-DECLARATION.md
+Processing (10/60): README.md
+Processing (11/60): analysis_options.yaml
+Processing (12/60): android/.gitignore
+Processing (13/60): android/app/build.gradle.kts
+Processing (14/60): android/app/src/debug/AndroidManifest.xml
+Processing (15/60): android/app/src/main/AndroidManifest.xml
+Processing (16/60): android/app/src/main/kotlin/com/sidhant/match3/MainActivity.kt
+Processing (17/60): android/app/src/main/res/drawable-v21/launch_background.xml
+Processing (18/60): android/app/src/main/res/drawable/launch_background.xml
+Processing (19/60): android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+Processing (20/60): android/app/src/main/res/values-night/styles.xml
+Processing (21/60): android/app/src/main/res/values/styles.xml
+Processing (22/60): android/app/src/profile/AndroidManifest.xml
+Processing (23/60): android/build.gradle.kts
+Processing (24/60): android/gradle.properties
+Processing (25/60): android/gradle/wrapper/gradle-wrapper.properties
+Processing (26/60): android/settings.gradle.kts
+Processing (27/60): fastlane/metadata/android/en-US/full_description.txt
+Processing (28/60): fastlane/metadata/android/en-US/short_description.txt
+Processing (29/60): fastlane/metadata/android/en-US/title.txt
+Processing (30/60): lib/data/repositories/progress_repository.dart
+Processing (31/60): lib/data/services/hive_service.dart
+Processing (32/60): lib/data/services/user_progress_adapter.dart
+Processing (33/60): lib/domain/models/game_state_model.dart
+Processing (34/60): lib/domain/models/gem.dart
+Processing (35/60): lib/domain/models/level_generator.dart
+Processing (36/60): lib/domain/models/level_goal.dart
+Processing (37/60): lib/domain/models/tile_model.dart
+Processing (38/60): lib/domain/models/user_progress.dart
+Processing (39/60): lib/domain/services/best_move_finder.dart
+Processing (40/60): lib/main.dart
+Processing (41/60): lib/ui/core/theme/app_colors.dart
+Processing (42/60): lib/ui/core/theme/app_theme.dart
+Processing (43/60): lib/ui/core/theme/app_theme_skin.dart
+Processing (44/60): lib/ui/core/utils/haptic_service.dart
+Processing (45/60): lib/ui/core/utils/sound_service.dart
+Processing (46/60): lib/ui/core/widgets/custom_gem_painter.dart
+Processing (47/60): lib/ui/core/widgets/tangible_button.dart
+Processing (48/60): lib/ui/features/game/view_models/game_view_model.dart
+Processing (49/60): lib/ui/features/game/views/game_view.dart
+Processing (50/60): lib/ui/features/game/widgets/match3_game.dart
+Processing (51/60): lib/ui/features/home/view_models/home_view_model.dart
+Processing (52/60): lib/ui/features/home/views/home_view.dart
+Processing (53/60): lib/ui/features/how_to_play/views/how_to_play_view.dart
+Processing (54/60): lib/ui/features/level_select/views/level_select_view.dart
+Processing (55/60): lib/ui/features/settings/views/settings_view.dart
+Processing (56/60): lib/ui/features/settings/widgets/custom_emoji_picker.dart
+Processing (57/60): lib/ui/providers.dart
+Processing (58/60): pubspec.lock
+Processing (59/60): pubspec.yaml
+Processing (60/60): scripts/export.sh
+
+Export completed successfully!
+Output file: /home/kushal/src/dart/match3/docs/llm/dump.txt
+Total source size: 0.28 MB across 60 files
+
+real	0m0.900s
+user	0m0.416s
+sys	0m0.635s
+kushal@fedora:~/src/dart/match3$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

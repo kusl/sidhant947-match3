@@ -1,12 +1,12 @@
 ===============================================================================
 PROJECT EXPORT
-Generated (UTC): 2026-10-15 12:17:42
+Generated (UTC): 2026-10-15 12:25:33
 Project Path:    /home/kushal/src/dart/match3
-Git Commit:      1a3652b3f78e880629082c8b4df51cba3f0204f3
+Git Commit:      15eadac2471929427f32f8c79e897b2f857676df
 Git Branch:      main
 Git Dirty:       no
 Flutter:         not installed
-Files Exported:  59
+Files Exported:  60
 ===============================================================================
 
 DIRECTORY STRUCTURE (exported files only):
@@ -20,6 +20,7 @@ DIRECTORY STRUCTURE (exported files only):
             feature_request.md
         workflows/
             build.yml
+            lock.yml
             test.yml
     .gitignore
     .metadata
@@ -313,6 +314,59 @@ jobs:
 
 
 ================================================================================
+FILE:     .github/workflows/lock.yml
+SIZE:     1.02 KB (1044 bytes)
+LINES:    43
+SHA256:   1b2df77c217579cb2564c773a2017c019f60d05a16606f1cdc03866afc7f3592
+MODIFIED: 2026-10-15 12:22:42 (UTC)
+================================================================================
+
+name: Update Lockfile
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  lock:
+    name: Update Lockfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Upgrade Dependencies
+        run: |
+          flutter --version
+          flutter pub upgrade
+          flutter pub outdated
+
+      - name: Commit and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- pubspec.lock; then
+            echo "pubspec.lock unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pubspec.lock
+          git commit -m "Update pubspec.lock"
+          git push
+          gh workflow run build.yml --ref "${{ github.ref_name }}"
+
+
+================================================================================
 FILE:     .github/workflows/test.yml
 SIZE:     1.10 KB (1125 bytes)
 LINES:    40
@@ -512,10 +566,10 @@ If you use AI to help write a contribution, **please just declare it first**. PR
 
 ================================================================================
 FILE:     README.md
-SIZE:     1.87 KB (1919 bytes)
-LINES:    33
-SHA256:   1a6f69c0773f1d873f2f7b54029d8f17d769ff7e66c8c35b3b3ed9c3d57dd914
-MODIFIED: 2026-10-15 12:14:01 (UTC)
+SIZE:     2.00 KB (2052 bytes)
+LINES:    35
+SHA256:   54db536ade49a8dd7c5b8b5086ec6845646b5f083a0eb04eb6bb008d2e006993
+MODIFIED: 2026-10-15 12:22:52 (UTC)
 ================================================================================
 
 # Match 3 - Free Open Source Offline Puzzle Game
@@ -535,6 +589,8 @@ Fork of [sidhant947/match3](https://github.com/sidhant947/match3). An elegant, m
 ## Toolchain
 
 Flutter 3.47 stable (Dart 3.13), AGP 9.4, Gradle 9.8, Kotlin 2.4, JDK 25. Min Android 7.0 (API 24). No Play Store target.
+
+No local Flutter needed. Run **Actions → Update Lockfile** to `flutter pub upgrade`, commit `pubspec.lock` and trigger a release.
 
 ## Features & Key Perks
 
@@ -9244,9 +9300,9 @@ log "$CYAN" "Total source size: ${TOTAL_MB} MB across ${FILE_COUNT} files"
 
 
 ===============================================================================
-EXPORT COMPLETED (UTC): 2026-10-15 12:17:43
-Total Files Exported:   59
-Total Source Size:      0.28 MB (290946 bytes)
+EXPORT COMPLETED (UTC): 2026-10-15 12:25:33
+Total Files Exported:   60
+Total Source Size:      0.28 MB (292123 bytes)
 Output File:            /home/kushal/src/dart/match3/docs/llm/dump.txt
 ===============================================================================
-DUMP SHA256 (of all lines above this one): 3066bf8759735fa184e2ed383fc4e4ac7acdc6952773e2cefcd3cb7cdc9ff9fc
+DUMP SHA256 (of all lines above this one): 5d0ba2b60fb93ae93685f89d2d09d288de9f5d344fd943eed5cdc6027f752736
