@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:match3/data/repositories/progress_repository.dart';
 import 'package:match3/data/services/hive_service.dart';
 import 'package:match3/ui/core/theme/app_theme_skin.dart';

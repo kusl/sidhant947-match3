@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import 'package:match3/data/repositories/progress_repository.dart';
 import 'package:match3/domain/models/user_progress.dart';

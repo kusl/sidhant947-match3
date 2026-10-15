@@ -1,4 +1,4 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import 'package:match3/domain/models/user_progress.dart';
 import 'user_progress_adapter.dart';
@@ -25,5 +25,3 @@ class HiveService {
     await _progressBox.put(_progressKey, progress);
   }
 }
-
-

@@ -3,9 +3,6 @@ name: Manual Build Test
 on:
   workflow_dispatch:
 
-env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
-
 jobs:
   build:
     name: Testing
@@ -18,7 +15,7 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '25'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2

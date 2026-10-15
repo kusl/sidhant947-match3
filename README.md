@@ -9,7 +9,12 @@ Fork of [sidhant947/match3](https://github.com/sidhant947/match3). An elegant, m
 - **Best-move hints**: the hint simulates every legal swap (or twist) through matches, specials, explosions, obstacles and cascades, and highlights the one that does the most for the current level goal. Moves that complete the goal win outright; then goal progress, then points, specials created and obstacles hit. Refill tiles are unknown, so only deterministic cascades count.
 - **Frozen tiles and crates** can no longer be swapped, matching the hint and twist rules.
 - **Releases**: every push to `main` publishes a full GitHub release `v<pubspec version>.<run number>` with universal and per-ABI APKs.
+- **Dependencies**: Riverpod 3 (legacy providers), `hive_ce` instead of the unmaintained `hive`.
 - `scripts/export.sh` dumps all text sources to `docs/llm/dump.txt` for LLM context.
+
+## Toolchain
+
+Flutter 3.47 stable (Dart 3.13), AGP 9.4, Gradle 9.8, Kotlin 2.4, JDK 25. Min Android 7.0 (API 24). No Play Store target.
 
 ## Features & Key Perks
 

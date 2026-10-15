@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:match3/domain/models/user_progress.dart';
 
 class UserProgressAdapter extends TypeAdapter<UserProgress> {
